@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fortheplot.today</title>
+<meta name="description" content="Do it for the plot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#000;font-family:"Outfit",system-ui,sans-serif;color:#fff}
+
+/* ===== FULLSCREEN VIDEO ===== */
+.video-bg{
+  position:fixed;inset:0;z-index:0;
+  overflow:hidden;
+}
+.video-bg video{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* ===== OVERLAYS ===== */
+/* Gradient overlay — darkens bottom for text readability */
+.overlay{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 30%, rgba(0,0,0,0.15) 65%, rgba(0,0,0,0.55) 100%);
+}
+
+/* Subtle vignette */
+.vignette{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%);
+}
+
+/* ===== TOP MARK ===== */
+.top{
+  position:fixed;
+  top:2rem;left:2.5rem;
+  z-index:10;
+  opacity:0;animation:fadeIn .8s .3s ease forwards;
+}
+
+.top-name{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-style:italic;
+  font-size:1.6rem;
+  color:rgba(255,255,255,0.9);
+  letter-spacing:-0.01em;
+  text-shadow:0 2px 20px rgba(0,0,0,0.3);
+}
+.top-name .dot{color:#E0A840;text-shadow:0 0 20px rgba(224,168,64,0.3)}
+
+/* ===== BOTTOM CONTENT ===== */
+.bottom{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:10;
+  padding:0 2.5rem 2.2rem;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:2rem;
+}
+
+/* Left — tagline */
+.tagline{
+  max-width:340px;
+  opacity:0;animation:fadeUp .8s .6s ease forwards;
+}
+.tagline h1{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-style:italic;font-weight:400;
+  font-size:clamp(2rem,4vw,2.8rem);
+  line-height:1.1;
+  color:rgba(255,255,255,0.92);
+  text-shadow:0 2px 30px rgba(0,0,0,0.3);
+  margin-bottom:0.5rem;
+}
+.tagline p{
+  font-size:0.78rem;font-weight:300;
+  color:rgba(255,255,255,0.45);
+  text-shadow:0 1px 10px rgba(0,0,0,0.3);
+}
+
+/* Right — glass link panel */
+.glass{
+  display:flex;
+  gap:0.5rem;
+  align-items:flex-end;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  opacity:0;animation:fadeUp .8s .8s ease forwards;
+}
+
+.lk{
+  display:flex;
+  align-items:center;
+  gap:0.55rem;
+  padding:0.65rem 1.1rem;
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:50px;
+  text-decoration:none;
+  color:rgba(255,255,255,0.8);
+  font-size:0.72rem;
+  font-weight:400;
+  letter-spacing:0.02em;
+  transition:all .35s cubic-bezier(.25,.46,.45,.94);
+  white-space:nowrap;
+}
+
+.lk:hover{
+  background:rgba(255,255,255,0.18);
+  border-color:rgba(255,255,255,0.22);
+  color:#fff;
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.15);
+}
+
+.lk svg{
+  width:14px;height:14px;
+  opacity:0.6;
+  transition:opacity .3s;
+}
+.lk:hover svg{opacity:0.9}
+
+/* Featured link */
+.lk.feat{
+  background:rgba(255,255,255,0.14);
+  border-color:rgba(224,168,64,0.15);
+}
+.lk.feat:hover{
+  border-color:rgba(224,168,64,0.3);
+  box-shadow:0 8px 32px rgba(224,168,64,0.08);
+}
+
+/* Small label under featured */
+.lk .tag{
+  font-family:"JetBrains Mono",monospace;
+  font-size:0.4rem;
+  letter-spacing:0.1em;
+  color:rgba(255,255,255,0.3);
+  margin-left:-0.1rem;
+}
+
+/* Footer */
+.foot{
+  position:fixed;
+  bottom:0.6rem;
+  left:50%;transform:translateX(-50%);
+  z-index:10;
+  font-family:"JetBrains Mono",monospace;
+  font-size:0.38rem;
+  letter-spacing:0.25em;
+  color:rgba(255,255,255,0.12);
+  opacity:0;animation:fadeIn .6s 1.4s ease forwards;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  .bottom{
+    flex-direction:column;
+    align-items:flex-start;
+    padding:0 1.5rem 4rem;
+    gap:1.2rem;
+  }
+  .glass{
+    justify-content:flex-start;
+    gap:0.4rem;
+  }
+  .lk{
+    padding:0.55rem 0.9rem;
+    font-size:0.65rem;
+  }
+  .tagline h1{font-size:clamp(1.6rem,6vw,2.2rem)}
+  .top{top:1.5rem;left:1.5rem}
+  .top-name{font-size:1.3rem}
+}
+
+@media(max-width:480px){
+  .glass{flex-wrap:wrap}
+  .lk{font-size:0.6rem;padding:0.5rem 0.8rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Fullscreen Video Background -->
+<div class="video-bg">
+  <video autoplay loop muted playsinline>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- Overlays -->
+<div class="overlay"></div>
+<div class="vignette"></div>
+
+<!-- Top — Site name -->
+<div class="top">
+  <div class="top-name">for the plot<span class="dot">.</span></div>
+</div>
+
+<!-- Bottom — Tagline + Links -->
+<div class="bottom">
+
+  <!-- Left: tagline -->
+  <div class="tagline">
+    <h1>Loading<span class="dot">..</span></h1>
+    <p>grab a chai, this might take a while.</p>
+  </div>
+
+  <!-- Right: glass pill links -->
+  <div class="glass">
+    <a href="https://tripboard.fortheplot.today" target="_blank" class="lk feat">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      tripboard
+    </a>
+    <a href="https://www.linkedin.com/in/atharva-pharande/" target="_blank" class="lk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://x.com/atharvapharande" target="_blank" class="lk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733-16h-4.267z"/><path d="M4 20l6.768-6.768m2.46-2.46l6.772-6.772"/></svg>
+      X
+    </a>
+    <a href="https://github.com/atharvapharande" target="_blank" class="lk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub
+    </a>
+    <a href="https://www.instagram.com/atharva_pharande/" target="_blank" class="lk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Instagram
+    </a>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="foot">&copy; 2026 FORTHEPLOT.TODAY</div>
+
+</body>
+</html>
