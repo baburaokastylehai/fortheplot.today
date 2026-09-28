@@ -460,6 +460,130 @@ body {
   transform: translate(-50%, 0);
 }
 
+.preview {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 48px);
+  z-index: 8;
+  display: grid;
+  grid-template-rows: 27px 1fr;
+  width: 246px;
+  height: 148px;
+  overflow: hidden;
+  color: rgba(255,255,255,.78);
+  background: rgba(10,11,13,.86);
+  border: 1px solid rgba(255,255,255,.105);
+  border-radius: 6px;
+  box-shadow: 0 20px 55px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.045);
+  opacity: 0;
+  transform: translate(-50%, 10px) perspective(500px) rotateX(-3deg) scale(.965);
+  transform-origin: 50% 100%;
+  transition: opacity .2s ease .08s, transform .42s cubic-bezier(.16,1,.3,1) .08s;
+  backdrop-filter: blur(18px) saturate(1.06);
+  -webkit-backdrop-filter: blur(18px) saturate(1.06);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.preview::after {
+  content: "";
+  position: absolute;
+  inset: 27px 0 auto;
+  height: 1px;
+  background: rgba(255,255,255,.065);
+}
+
+.portal:hover .preview,
+.portal:focus-visible .preview,
+.portal.is-active .preview {
+  opacity: 1;
+  transform: translate(-50%, 0) perspective(500px) rotateX(0) scale(1);
+}
+
+.preview-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 0 9px;
+  color: rgba(255,255,255,.38);
+  font-size: 7px;
+  font-weight: 580;
+  letter-spacing: .045em;
+}
+
+.preview-favicon {
+  display: grid;
+  place-items: center;
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+  border: 1px solid rgba(var(--accent),.28);
+  border-radius: 3px;
+  color: rgba(var(--accent),.88);
+  font-size: 6px;
+  font-weight: 680;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.preview-domain {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-arrow {
+  margin-left: auto;
+  color: rgba(255,255,255,.3);
+  font-size: 10px;
+}
+
+.preview-frame {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #0a0b0d;
+}
+
+.preview-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(6,8,10,.13);
+  pointer-events: none;
+}
+
+.preview-shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.preview-linkedin .preview-shot {
+  transform: scale(1.04);
+  transform-origin: 40% 20%;
+}
+
+.preview-tripboard .preview-shot {
+  object-position: 50% 17%;
+  transform: scale(1.72);
+  transform-origin: 50% 38%;
+}
+
+.preview-instagram .preview-shot {
+  transform: scale(1.08);
+  transform-origin: 50% 20%;
+}
+
+.preview-x .preview-shot {
+  transform: scale(1.48);
+  transform-origin: 50% 18%;
+}
+
 .datum {
   position: absolute;
   left: 50%;
@@ -589,6 +713,7 @@ body {
   .datum { top: 59px; }
 
   .label { bottom: calc(100% + 13px); }
+  .preview { display: none; }
 }
 
 @media (max-width: 350px) {
@@ -712,6 +837,10 @@ body {
     <span class="portal-slot" style="--delay:.28s">
       <a class="portal github" href="https://github.com/baburaokastylehai" target="_blank" rel="noreferrer" aria-label="Open GitHub profile">
         <span class="label"><span class="label-name">GitHub</span><span class="label-note">things I make</span></span>
+        <span class="preview preview-github" aria-hidden="true">
+          <span class="preview-bar"><span class="preview-favicon">gh</span><span class="preview-domain">github.com/baburaokastylehai</span><span class="preview-arrow">&#8599;</span></span>
+          <span class="preview-frame"><img class="preview-shot" src="assets/previews/github.jpg" alt="" decoding="async"></span>
+        </span>
         <span class="mark"><svg viewBox="0 0 36 36" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 4.4a13.7 13.7 0 0 0-4.33 26.7c.68.12.93-.3.93-.66v-2.66c-3.8.83-4.6-1.61-4.6-1.61-.62-1.58-1.52-2-1.52-2-1.25-.85.09-.83.09-.83 1.38.1 2.1 1.41 2.1 1.41 1.23 2.1 3.22 1.5 4 1.15.13-.89.48-1.5.88-1.84-3.03-.35-6.22-1.52-6.22-6.76 0-1.5.53-2.72 1.41-3.68-.14-.35-.61-1.74.14-3.63 0 0 1.15-.37 3.77 1.4a13.08 13.08 0 0 1 6.86 0c2.62-1.77 3.77-1.4 3.77-1.4.75 1.89.28 3.28.14 3.63.88.96 1.41 2.18 1.41 3.68 0 5.26-3.2 6.4-6.24 6.75.49.42.93 1.26.93 2.54v3.77c0 .37.25.79.94.66A13.7 13.7 0 0 0 18 4.4Z"/></svg></span>
         <span class="datum" aria-hidden="true"></span>
       </a>
@@ -720,6 +849,10 @@ body {
     <span class="portal-slot" style="--delay:.36s">
       <a class="portal linkedin" href="https://www.linkedin.com/in/atharvashembekar/" target="_blank" rel="noreferrer" aria-label="Open LinkedIn profile">
         <span class="label"><span class="label-name">LinkedIn</span><span class="label-note">the official version</span></span>
+        <span class="preview preview-linkedin" aria-hidden="true">
+          <span class="preview-bar"><span class="preview-favicon">in</span><span class="preview-domain">linkedin.com/in/atharvashembekar</span><span class="preview-arrow">&#8599;</span></span>
+          <span class="preview-frame"><img class="preview-shot" src="assets/previews/linkedin.jpg" alt="" decoding="async"></span>
+        </span>
         <span class="mark"><svg viewBox="0 0 36 36" fill="currentColor" aria-hidden="true"><path d="M9.1 13.7h4.35v14.2H9.1V13.7Zm2.18-6.8a2.53 2.53 0 1 1 0 5.06 2.53 2.53 0 0 1 0-5.06Zm4.95 6.8h4.17v1.94h.06c.58-1.11 2-2.29 4.13-2.29 4.41 0 5.23 2.93 5.23 6.74v7.81h-4.35v-6.93c0-1.65-.03-3.77-2.27-3.77-2.27 0-2.62 1.79-2.62 3.65v7.05h-4.35V13.7Z"/></svg></span>
         <span class="datum" aria-hidden="true"></span>
       </a>
@@ -728,6 +861,10 @@ body {
     <span class="portal-slot featured" style="--delay:.44s">
       <a class="portal tripboard" href="https://tripboard.fortheplot.today" target="_blank" rel="noreferrer" aria-label="Open Tripboard">
         <span class="label"><span class="label-name">Tripboard</span><span class="label-note">plan somewhere</span></span>
+        <span class="preview preview-tripboard" aria-hidden="true">
+          <span class="preview-bar"><span class="preview-favicon">tb</span><span class="preview-domain">tripboard.fortheplot.today</span><span class="preview-arrow">&#8599;</span></span>
+          <span class="preview-frame"><img class="preview-shot" src="assets/previews/tripboard.jpg" alt="" decoding="async"></span>
+        </span>
         <span class="mark"><img src="assets/tripboard-map.png" alt=""></span>
         <span class="datum" aria-hidden="true"></span>
       </a>
@@ -736,6 +873,10 @@ body {
     <span class="portal-slot" style="--delay:.52s">
       <a class="portal instagram" href="https://www.instagram.com/shippeditanyway" target="_blank" rel="noreferrer" aria-label="Open Shipped It Anyway on Instagram">
         <span class="label"><span class="label-name">Instagram</span><span class="label-note">shipped it anyway</span></span>
+        <span class="preview preview-instagram" aria-hidden="true">
+          <span class="preview-bar"><span class="preview-favicon">ig</span><span class="preview-domain">instagram.com/shippeditanyway</span><span class="preview-arrow">&#8599;</span></span>
+          <span class="preview-frame"><img class="preview-shot" src="assets/previews/instagram.jpg" alt="" decoding="async"></span>
+        </span>
         <span class="mark"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6.7" y="6.7" width="22.6" height="22.6" rx="6.6"/><circle cx="18" cy="18" r="5.2"/><circle cx="25.1" cy="10.9" r="1.25" fill="currentColor" stroke="none"/></svg></span>
         <span class="datum" aria-hidden="true"></span>
       </a>
@@ -744,6 +885,10 @@ body {
     <span class="portal-slot" style="--delay:.60s">
       <a class="portal x-social" href="https://x.com/NamasteModiG" target="_blank" rel="noreferrer" aria-label="Open X profile">
         <span class="label"><span class="label-name">X</span><span class="label-note">loose thoughts</span></span>
+        <span class="preview preview-x" aria-hidden="true">
+          <span class="preview-bar"><span class="preview-favicon">x</span><span class="preview-domain">x.com/NamasteModiG</span><span class="preview-arrow">&#8599;</span></span>
+          <span class="preview-frame"><img class="preview-shot" src="assets/previews/x.jpg" alt="" decoding="async"></span>
+        </span>
         <span class="mark"><svg viewBox="0 0 36 36" fill="currentColor" aria-hidden="true"><path d="M8.1 7.5h6.45l5.06 6.77 5.94-6.77h2.18l-7.1 8.09L28.4 28.5h-6.43l-5.61-7.5-6.58 7.5H7.6l7.75-8.83L8.1 7.5Zm5.38 1.7h-2.1l11.56 17.6h2.09L13.48 9.2Z"/></svg></span>
         <span class="datum" aria-hidden="true"></span>
       </a>
