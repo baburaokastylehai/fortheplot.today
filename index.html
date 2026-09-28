@@ -1,253 +1,925 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08090a">
 <title>fortheplot.today</title>
-<meta name="description" content="Do it for the plot.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<meta name="description" content="A personal corner of the internet.">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden}
-body{background:#000;font-family:"Outfit",system-ui,sans-serif;color:#fff}
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
 
-/* ===== FULLSCREEN VIDEO ===== */
-.video-bg{
-  position:fixed;inset:0;z-index:0;
-  overflow:hidden;
-}
-.video-bg video{
-  width:100%;height:100%;
-  object-fit:cover;
-  display:block;
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #08090a;
 }
 
-/* ===== OVERLAYS ===== */
-/* Gradient overlay — darkens bottom for text readability */
-.overlay{
-  position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.02) 30%, rgba(0,0,0,0.15) 65%, rgba(0,0,0,0.55) 100%);
+body {
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Subtle vignette */
-.vignette{
-  position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%);
+.space {
+  --near-x: 0px;
+  --near-y: 0px;
+  --rail-x: 0px;
+  --rail-y: 0px;
+  --plane-x: 50vw;
+  --plane-accent: 255,255,255;
+  position: fixed;
+  inset: 0;
+  isolation: isolate;
+  min-height: 100svh;
+  overflow: hidden;
 }
 
-/* ===== TOP MARK ===== */
-.top{
-  position:fixed;
-  top:2rem;left:2.5rem;
-  z-index:10;
-  opacity:0;animation:fadeIn .8s .3s ease forwards;
+.scene,
+.scene::before,
+.scene::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-.top-name{
-  font-family:"Instrument Serif",Georgia,serif;
-  font-style:italic;
-  font-size:1.6rem;
-  color:rgba(255,255,255,0.9);
-  letter-spacing:-0.01em;
-  text-shadow:0 2px 20px rgba(0,0,0,0.3);
-}
-.top-name .dot{color:#E0A840;text-shadow:0 0 20px rgba(224,168,64,0.3)}
-
-/* ===== BOTTOM CONTENT ===== */
-.bottom{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  z-index:10;
-  padding:0 2.5rem 2.2rem;
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:2rem;
+.scene {
+  z-index: -2;
+  overflow: hidden;
+  background: #08090a;
 }
 
-/* Left — tagline */
-.tagline{
-  max-width:340px;
-  opacity:0;animation:fadeUp .8s .6s ease forwards;
-}
-.tagline h1{
-  font-family:"Instrument Serif",Georgia,serif;
-  font-style:italic;font-weight:400;
-  font-size:clamp(2rem,4vw,2.8rem);
-  line-height:1.1;
-  color:rgba(255,255,255,0.92);
-  text-shadow:0 2px 30px rgba(0,0,0,0.3);
-  margin-bottom:0.5rem;
-}
-.tagline p{
-  font-size:0.78rem;font-weight:300;
-  color:rgba(255,255,255,0.45);
-  text-shadow:0 1px 10px rgba(0,0,0,0.3);
+.scene img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  transform: translate3d(0,0,0) scale(1.008);
+  filter: none;
+  backface-visibility: hidden;
+  animation: scene-in 1.7s cubic-bezier(.2,.75,.2,1);
+  will-change: transform;
 }
 
-/* Right — glass link panel */
-.glass{
-  display:flex;
-  gap:0.5rem;
-  align-items:flex-end;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-  opacity:0;animation:fadeUp .8s .8s ease forwards;
+.scene::before {
+  content: "";
+  z-index: 1;
+  background: none;
 }
 
-.lk{
-  display:flex;
-  align-items:center;
-  gap:0.55rem;
-  padding:0.65rem 1.1rem;
-  background:rgba(255,255,255,0.1);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:50px;
-  text-decoration:none;
-  color:rgba(255,255,255,0.8);
-  font-size:0.72rem;
-  font-weight:400;
-  letter-spacing:0.02em;
-  transition:all .35s cubic-bezier(.25,.46,.45,.94);
-  white-space:nowrap;
+.scene::after {
+  content: "";
+  z-index: 2;
+  opacity: .022;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.74' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.lk:hover{
-  background:rgba(255,255,255,0.18);
-  border-color:rgba(255,255,255,0.22);
-  color:#fff;
-  transform:translateY(-2px);
-  box-shadow:0 8px 32px rgba(0,0,0,0.15);
+.signature {
+  position: fixed;
+  top: max(24px, env(safe-area-inset-top));
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,.39);
+  font-size: 10px;
+  font-weight: 540;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  user-select: none;
+  animation: signature-in .9s .65s ease both;
 }
 
-.lk svg{
-  width:14px;height:14px;
-  opacity:0.6;
-  transition:opacity .3s;
-}
-.lk:hover svg{opacity:0.9}
-
-/* Featured link */
-.lk.feat{
-  background:rgba(255,255,255,0.14);
-  border-color:rgba(224,168,64,0.15);
-}
-.lk.feat:hover{
-  border-color:rgba(224,168,64,0.3);
-  box-shadow:0 8px 32px rgba(224,168,64,0.08);
+.signature::before,
+.signature::after {
+  content: "";
+  width: 3px;
+  height: 3px;
+  flex: 0 0 3px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 0 9px rgba(255,255,255,.5);
 }
 
-/* Small label under featured */
-.lk .tag{
-  font-family:"JetBrains Mono",monospace;
-  font-size:0.4rem;
-  letter-spacing:0.1em;
-  color:rgba(255,255,255,0.3);
-  margin-left:-0.1rem;
+.music-rail {
+  position: fixed;
+  inset: 0 clamp(28px, 3.6vw, 58px) 0 auto;
+  z-index: 3;
+  width: min(260px, 26vw);
+  overflow: hidden;
+  mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 87%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 13%, #000 87%, transparent 100%);
+  transform: translate3d(var(--rail-x), var(--rail-y), 0) perspective(900px) rotateY(-1deg);
+  transform-origin: 100% 50%;
+  animation: rail-in 1.3s .8s ease both;
+  will-change: transform;
 }
 
-/* Footer */
-.foot{
-  position:fixed;
-  bottom:0.6rem;
-  left:50%;transform:translateX(-50%);
-  z-index:10;
-  font-family:"JetBrains Mono",monospace;
-  font-size:0.38rem;
-  letter-spacing:0.25em;
-  color:rgba(255,255,255,0.12);
-  opacity:0;animation:fadeIn .6s 1.4s ease forwards;
+.rail-heading {
+  position: fixed;
+  top: max(27px, env(safe-area-inset-top));
+  right: clamp(28px, 3.6vw, 58px);
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,.34);
+  font-size: 8px;
+  font-weight: 560;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }
 
-/* ===== ANIMATIONS ===== */
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.rail-heading::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: rgba(255,255,255,.22);
+}
 
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-  .bottom{
-    flex-direction:column;
-    align-items:flex-start;
-    padding:0 1.5rem 4rem;
-    gap:1.2rem;
+.listening-mark {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 4;
+  width: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.5));
+  box-shadow: 0 0 12px rgba(255,255,255,.18);
+  pointer-events: none;
+}
+
+.listening-mark::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 0 10px rgba(255,255,255,.45);
+}
+
+.reel {
+  width: 100%;
+  animation: reel-roll 84s linear infinite;
+  will-change: transform;
+}
+
+.music-rail:hover .reel,
+.music-rail:focus-within .reel { animation-play-state: paused; }
+
+.song-set {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 31px;
+  min-height: 100vh;
+  padding: 14vh 0;
+}
+
+.song {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+  width: 100%;
+  color: inherit;
+  text-align: right;
+  text-decoration: none;
+  opacity: .29;
+  transform: translateX(0);
+  transition: opacity .5s ease, transform .6s cubic-bezier(.16,1,.3,1);
+}
+
+.song:hover,
+.song:focus-visible,
+.song.is-current {
+  opacity: .9;
+  transform: translateX(-9px);
+  outline: none;
+}
+
+.song-title {
+  color: rgba(255,255,255,.88);
+  font-family: "Iowan Old Style", Baskerville, "Times New Roman", serif;
+  font-size: clamp(14px, 1.35vw, 18px);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.song-artist {
+  color: rgba(255,255,255,.47);
+  font-size: 8px;
+  font-weight: 560;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.song-note {
+  color: rgba(255,255,255,.32);
+  font-size: 8px;
+  font-weight: 420;
+  letter-spacing: .01em;
+}
+
+.constellation {
+  position: absolute;
+  top: 69%;
+  left: 50%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(22px, 2.7vw, 40px);
+  width: max-content;
+  max-width: calc(100vw - 28px);
+  transform: translate(calc(-50% + var(--near-x)), calc(-100% + var(--near-y)));
+  will-change: transform;
+}
+
+.interaction-plane {
+  position: fixed;
+  top: calc(69% - 4px);
+  left: var(--plane-x);
+  z-index: 3;
+  width: clamp(130px, 13vw, 190px);
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(var(--plane-accent),.2) 0,
+    rgba(var(--plane-accent),.085) 28%,
+    rgba(var(--plane-accent),0) 72%);
+  filter: blur(5px);
+  opacity: 0;
+  transform: translate(-50%, -50%) perspective(280px) rotateX(69deg) scale(.72);
+  transition: left .5s cubic-bezier(.16,1,.3,1), opacity .38s ease, transform .55s cubic-bezier(.16,1,.3,1);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  will-change: left, opacity, transform;
+}
+
+.space.has-active .interaction-plane {
+  opacity: .58;
+  transform: translate(-50%, -50%) perspective(280px) rotateX(69deg) scale(1);
+}
+
+.portal-slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 74px;
+  animation: object-in .9s var(--delay) cubic-bezier(.16,1,.3,1) both;
+}
+
+.portal-slot.featured {
+  flex-basis: 70px;
+  width: 70px;
+  margin-inline: clamp(3px, .7vw, 10px);
+}
+
+.owner-name {
+  position: absolute;
+  top: calc(69% + 13px);
+  left: 50%;
+  z-index: 4;
+  color: rgba(255,255,255,.52);
+  font-size: 10px;
+  font-weight: 560;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(calc(-50% + var(--near-x)));
+  animation: owner-in .9s .92s ease both;
+  will-change: transform;
+}
+
+.portal {
+  --accent: 255,255,255;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  color: rgba(255,255,255,.82);
+  text-decoration: none;
+  outline: none;
+  opacity: .84;
+  transform: perspective(460px) translate3d(0,0,0) rotateX(0deg) rotateY(0deg) scale(1);
+  transform-origin: 50% 68%;
+  transition: color .35s ease, opacity .35s ease, filter .35s ease;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.portal::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent),.12), rgba(var(--accent),0) 67%);
+  opacity: 0;
+  transform: scale(.72);
+  transition: opacity .35s ease, transform .45s cubic-bezier(.16,1,.3,1);
+  pointer-events: none;
+}
+
+.portal::after {
+  content: "";
+  position: absolute;
+  top: 67px;
+  left: 50%;
+  z-index: -1;
+  width: 58px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(var(--accent),.28), rgba(var(--accent),0) 70%);
+  filter: blur(4px);
+  opacity: .22;
+  transform: translateX(-50%) scaleX(.6);
+  transition: opacity .35s ease, transform .45s cubic-bezier(.16,1,.3,1);
+  pointer-events: none;
+}
+
+.constellation.is-engaged .portal:not(.is-active) { opacity: .46; }
+
+.portal:hover,
+.portal:focus-visible,
+.portal.is-active {
+  z-index: 3;
+  color: rgba(255,255,255,.98);
+  opacity: 1;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.28));
+}
+
+.portal:hover::before,
+.portal:focus-visible::before,
+.portal.is-active::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.portal:hover::after,
+.portal:focus-visible::after,
+.portal.is-active::after {
+  opacity: .78;
+  transform: translateX(-50%) scaleX(1.08);
+}
+
+.portal:active { filter: brightness(.94) drop-shadow(0 5px 11px rgba(0,0,0,.25)); }
+
+.mark {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+}
+
+.mark svg {
+  width: 31px;
+  height: 31px;
+  overflow: visible;
+  shape-rendering: geometricPrecision;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.62));
+}
+
+.linkedin .mark svg { width: 29px; height: 29px; }
+.instagram .mark svg { width: 30px; height: 30px; }
+.x-social .mark svg { width: 29px; height: 29px; }
+
+.tripboard { --accent: 112,178,215; }
+.instagram { --accent: 230,102,145; }
+.linkedin { --accent: 81,167,220; }
+
+.tripboard .mark {
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 8px 15px rgba(0,0,0,.34));
+}
+
+.tripboard .mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: auto;
+}
+
+.label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 17px);
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  width: max-content;
+  max-width: 160px;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 7px);
+  transition: opacity .2s ease, transform .35s cubic-bezier(.16,1,.3,1);
+  pointer-events: none;
+}
+
+.label-name {
+  color: rgba(255,255,255,.82);
+  font-size: 10px;
+  font-weight: 580;
+  letter-spacing: .04em;
+}
+
+.label-note {
+  color: rgba(255,255,255,.4);
+  font-size: 9px;
+  font-weight: 430;
+  letter-spacing: .02em;
+}
+
+.portal:hover .label,
+.portal:focus-visible .label,
+.portal.is-active .label {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.datum {
+  position: absolute;
+  left: 50%;
+  top: 66px;
+  width: 1px;
+  height: 14px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(var(--accent),.28), rgba(var(--accent),0));
+  transform: translateX(-50%) scaleY(.45);
+  transform-origin: 50% 0;
+  opacity: .36;
+  transition: opacity .35s ease, transform .45s cubic-bezier(.16,1,.3,1);
+  pointer-events: none;
+}
+
+.portal:hover .datum,
+.portal:focus-visible .datum,
+.portal.is-active .datum {
+  opacity: .9;
+  transform: translateX(-50%) scaleY(1);
+}
+
+@keyframes scene-in {
+  from { opacity: 0; transform: translate3d(0,0,0) scale(1.04); }
+  to { opacity: 1; transform: translate3d(0,0,0) scale(1.008); }
+}
+
+@keyframes signature-in {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes owner-in {
+  from { opacity: 0; transform: translate(calc(-50% + var(--near-x)), calc(var(--near-y) - 6px)); }
+  to { opacity: 1; transform: translate(calc(-50% + var(--near-x)), var(--near-y)); }
+}
+
+@keyframes object-in {
+  from { opacity: 0; transform: translateY(14px) scale(.92); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes words-in {
+  from { opacity: 0; filter: blur(5px); transform: translateY(9px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@keyframes rail-in {
+  from { opacity: 0; filter: blur(6px); }
+  to { opacity: 1; filter: blur(0); }
+}
+
+@keyframes reel-roll {
+  from { transform: translate3d(0,0,0); }
+  to { transform: translate3d(0,-50%,0); }
+}
+
+@media (max-width: 620px) {
+  .scene img {
+    width: auto;
+    min-width: 100%;
+    max-width: none;
   }
-  .glass{
-    justify-content:flex-start;
-    gap:0.4rem;
+
+  .signature { top: max(19px, env(safe-area-inset-top)); }
+
+  .music-rail {
+    inset: 10% 16px auto auto;
+    width: min(190px, 51vw);
+    height: 45%;
+    mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 84%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 84%, transparent 100%);
   }
-  .lk{
-    padding:0.55rem 0.9rem;
-    font-size:0.65rem;
+
+  .rail-heading { top: max(18px, env(safe-area-inset-top)); right: 17px; }
+  .song-set { gap: 24px; min-height: 45vh; padding: 8vh 0; }
+  .song-title { font-size: 14px; }
+  .song-note { display: none; }
+
+  .constellation {
+    top: 68.5%;
+    gap: clamp(8px, 3vw, 14px);
+    max-width: calc(100vw - 20px);
   }
-  .tagline h1{font-size:clamp(1.6rem,6vw,2.2rem)}
-  .top{top:1.5rem;left:1.5rem}
-  .top-name{font-size:1.3rem}
+
+  .interaction-plane { top: calc(68.5% - 3px); }
+
+  .owner-name {
+    top: calc(68.5% + 10px);
+    font-size: 9px;
+    letter-spacing: .08em;
+  }
+
+  .portal-slot {
+    flex-basis: clamp(46px, 12vw, 54px);
+    width: clamp(46px, 12vw, 54px);
+    height: 66px;
+  }
+
+  .portal-slot.featured {
+    flex-basis: 60px;
+    width: 60px;
+    margin-inline: 2px;
+  }
+
+  .portal {
+    width: 50px;
+    height: 50px;
+  }
+
+  .mark {
+    width: 42px;
+    height: 42px;
+  }
+
+  .mark svg {
+    width: 27px;
+    height: 27px;
+  }
+
+  .tripboard .mark {
+    width: 45px;
+    height: 45px;
+  }
+
+  .portal::after,
+  .datum { top: 59px; }
+
+  .label { bottom: calc(100% + 13px); }
 }
 
-@media(max-width:480px){
-  .glass{flex-wrap:wrap}
-  .lk{font-size:0.6rem;padding:0.5rem 0.8rem}
+@media (max-width: 350px) {
+  .constellation { gap: 6px; }
+  .portal-slot { flex-basis: 46px; width: 46px; }
+  .portal-slot.featured { flex-basis: 53px; width: 53px; margin-inline: 0; }
+  .portal { width: 45px; height: 45px; }
+  .mark { width: 39px; height: 39px; }
+  .tripboard .mark { width: 42px; height: 42px; }
+  .portal::after,
+  .datum { top: 54px; }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .portal { opacity: .82; }
+  .portal:active { transform: scale(.94) !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: .01ms !important;
+  }
+  .portal { transform: none !important; }
+  .reel { animation: none !important; transform: translateY(-8%); }
 }
 </style>
 </head>
 <body>
-
-<!-- Fullscreen Video Background -->
-<div class="video-bg">
-  <video autoplay loop muted playsinline>
-    <source src="video.mp4" type="video/mp4">
-  </video>
-</div>
-
-<!-- Overlays -->
-<div class="overlay"></div>
-<div class="vignette"></div>
-
-<!-- Top — Site name -->
-<div class="top">
-  <div class="top-name">for the plot<span class="dot">.</span></div>
-</div>
-
-<!-- Bottom — Tagline + Links -->
-<div class="bottom">
-
-  <!-- Left: tagline -->
-  <div class="tagline">
-    <h1>Loading<span class="dot">..</span></h1>
-    <p>grab a chai, this might take a while.</p>
+<main class="space" aria-label="fortheplot.today">
+  <div class="scene" aria-hidden="true">
+    <img src="assets/hero-atmosphere.png" alt="">
   </div>
 
-  <!-- Right: glass pill links -->
-  <div class="glass">
-    <a href="https://tripboard.fortheplot.today" target="_blank" class="lk feat">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      tripboard
-    </a>
-    <a href="https://www.linkedin.com/in/atharvashembekar/" target="_blank" class="lk">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-      LinkedIn
-    </a>
-    <a href="https://x.com/NamasteModiG" target="_blank" class="lk">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733-16h-4.267z"/><path d="M4 20l6.768-6.768m2.46-2.46l6.772-6.772"/></svg>
-      X
-    </a>
-    <a href="https://github.com/baburaokastylehai" target="_blank" class="lk">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-      GitHub
-    </a>
-    <a href="https://www.instagram.com/shippeditanyway" target="_blank" class="lk">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      Instagram
-    </a>
-  </div>
+  <div class="interaction-plane" aria-hidden="true"></div>
 
-</div>
-<button id="snd" onclick="const v=document.querySelector('video');v.muted=!v.muted;this.textContent=v.muted?'♪ sound':'♪ mute'" style="position:fixed;top:2rem;right:2.5rem;z-index:10;background:rgba(255,255,255,0.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.12);border-radius:50px;color:rgba(255,255,255,0.7);font-family:Outfit,sans-serif;font-size:0.65rem;padding:0.5rem 1rem;cursor:pointer;transition:all .3s;opacity:0;animation:fadeIn .6s 1.5s ease forwards">♪ sound</button>
-<!-- Footer -->
-<div class="foot">&copy; 2026 FORTHEPLOT.TODAY</div>
+  <div class="signature" aria-hidden="true">for the plot</div>
 
+  <div class="rail-heading" aria-hidden="true">in rotation</div>
+
+  <aside class="music-rail" aria-label="Songs Atharva keeps coming back to">
+    <span class="listening-mark" aria-hidden="true"></span>
+    <div class="reel">
+      <div class="song-set">
+        <a class="song" href="https://www.youtube.com/watch?v=wccRif2DaGs" target="_blank" rel="noreferrer">
+          <span class="song-title">Vienna</span>
+          <span class="song-artist">Billy Joel</span>
+          <span class="song-note">the permission to take your time.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/watch?v=p5XtkwlSIGI" target="_blank" rel="noreferrer">
+          <span class="song-title">Slow Dancing in a Burning Room</span>
+          <span class="song-artist">John Mayer</span>
+          <span class="song-note">grace, with the lights left low.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/results?search_query=Mehdi+Hassan+Rafta+Rafta+Woh+Meri" target="_blank" rel="noreferrer">
+          <span class="song-title">Rafta Rafta Woh Meri</span>
+          <span class="song-artist">Mehdi Hassan</span>
+          <span class="song-note">a smile arriving one verse at a time.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/watch?v=JYuyWrkwpok" target="_blank" rel="noreferrer">
+          <span class="song-title">Fly Me to the Moon</span>
+          <span class="song-artist">Frank Sinatra</span>
+          <span class="song-note">moonlight, tailored.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/results?search_query=Mehdi+Hassan+Aaye+Kuch+Abr+Kuch+Sharab+Aaye" target="_blank" rel="noreferrer">
+          <span class="song-title">Aaye Kuch Abr</span>
+          <span class="song-artist">Mehdi Hassan</span>
+          <span class="song-note">rainclouds, poured over a melody.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/watch?v=w5iA5LIwF2A" target="_blank" rel="noreferrer">
+          <span class="song-title">Just Chill</span>
+          <span class="song-artist">Maine Pyaar Kyun Kiya</span>
+          <span class="song-note">2005. windows down.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/watch?v=UuLNftlHk8k" target="_blank" rel="noreferrer">
+          <span class="song-title">Dil Di Nazar</span>
+          <span class="song-artist">Maine Pyaar Kyun Kiya</span>
+          <span class="song-note">another summer, same soundtrack.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/results?search_query=John+Mayer+New+Light+official" target="_blank" rel="noreferrer">
+          <span class="song-title">New Light</span>
+          <span class="song-artist">John Mayer</span>
+          <span class="song-note">awkward confidence, perfectly dressed.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/watch?v=hLQl3WQQoQ0" target="_blank" rel="noreferrer">
+          <span class="song-title">Someone Like You</span>
+          <span class="song-artist">Adele</span>
+          <span class="song-note">the graceful end of something.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/results?search_query=Dean+Martin+Sway+official" target="_blank" rel="noreferrer">
+          <span class="song-title">Sway</span>
+          <span class="song-artist">Dean Martin</span>
+          <span class="song-note">a room learning to move.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/results?search_query=Ghulam+Ali+Apni+Dhun+Mein+Rehta+Hoon" target="_blank" rel="noreferrer">
+          <span class="song-title">Apni Dhun Mein Rehta Hoon</span>
+          <span class="song-artist">Ghulam Ali</span>
+          <span class="song-note">entirely content in its own orbit.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/results?search_query=Frank+Sinatra+That%27s+Life+official" target="_blank" rel="noreferrer">
+          <span class="song-title">That's Life</span>
+          <span class="song-artist">Frank Sinatra</span>
+          <span class="song-note">a shrug, a grin, another round.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/results?search_query=Salman+Khan+You%27re+My+Love+Partner+song" target="_blank" rel="noreferrer">
+          <span class="song-title">You're My Love</span>
+          <span class="song-artist">Partner</span>
+          <span class="song-note">peak 2007, no notes.</span>
+        </a>
+        <a class="song" href="https://www.youtube.com/watch?v=rYEDA3JcQqw" target="_blank" rel="noreferrer">
+          <span class="song-title">Rolling in the Deep</span>
+          <span class="song-artist">Adele</span>
+          <span class="song-note">a voice taking up the whole room.</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <nav class="constellation" aria-label="Places on the internet">
+    <span class="portal-slot" style="--delay:.28s">
+      <a class="portal github" href="https://github.com/baburaokastylehai" target="_blank" rel="noreferrer" aria-label="Open GitHub profile">
+        <span class="label"><span class="label-name">GitHub</span><span class="label-note">things I make</span></span>
+        <span class="mark"><svg viewBox="0 0 36 36" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M18 4.4a13.7 13.7 0 0 0-4.33 26.7c.68.12.93-.3.93-.66v-2.66c-3.8.83-4.6-1.61-4.6-1.61-.62-1.58-1.52-2-1.52-2-1.25-.85.09-.83.09-.83 1.38.1 2.1 1.41 2.1 1.41 1.23 2.1 3.22 1.5 4 1.15.13-.89.48-1.5.88-1.84-3.03-.35-6.22-1.52-6.22-6.76 0-1.5.53-2.72 1.41-3.68-.14-.35-.61-1.74.14-3.63 0 0 1.15-.37 3.77 1.4a13.08 13.08 0 0 1 6.86 0c2.62-1.77 3.77-1.4 3.77-1.4.75 1.89.28 3.28.14 3.63.88.96 1.41 2.18 1.41 3.68 0 5.26-3.2 6.4-6.24 6.75.49.42.93 1.26.93 2.54v3.77c0 .37.25.79.94.66A13.7 13.7 0 0 0 18 4.4Z"/></svg></span>
+        <span class="datum" aria-hidden="true"></span>
+      </a>
+    </span>
+
+    <span class="portal-slot" style="--delay:.36s">
+      <a class="portal linkedin" href="https://www.linkedin.com/in/atharvashembekar/" target="_blank" rel="noreferrer" aria-label="Open LinkedIn profile">
+        <span class="label"><span class="label-name">LinkedIn</span><span class="label-note">the official version</span></span>
+        <span class="mark"><svg viewBox="0 0 36 36" fill="currentColor" aria-hidden="true"><path d="M9.1 13.7h4.35v14.2H9.1V13.7Zm2.18-6.8a2.53 2.53 0 1 1 0 5.06 2.53 2.53 0 0 1 0-5.06Zm4.95 6.8h4.17v1.94h.06c.58-1.11 2-2.29 4.13-2.29 4.41 0 5.23 2.93 5.23 6.74v7.81h-4.35v-6.93c0-1.65-.03-3.77-2.27-3.77-2.27 0-2.62 1.79-2.62 3.65v7.05h-4.35V13.7Z"/></svg></span>
+        <span class="datum" aria-hidden="true"></span>
+      </a>
+    </span>
+
+    <span class="portal-slot featured" style="--delay:.44s">
+      <a class="portal tripboard" href="https://tripboard.fortheplot.today" target="_blank" rel="noreferrer" aria-label="Open Tripboard">
+        <span class="label"><span class="label-name">Tripboard</span><span class="label-note">plan somewhere</span></span>
+        <span class="mark"><img src="assets/tripboard-map.png" alt=""></span>
+        <span class="datum" aria-hidden="true"></span>
+      </a>
+    </span>
+
+    <span class="portal-slot" style="--delay:.52s">
+      <a class="portal instagram" href="https://www.instagram.com/shippeditanyway" target="_blank" rel="noreferrer" aria-label="Open Shipped It Anyway on Instagram">
+        <span class="label"><span class="label-name">Instagram</span><span class="label-note">shipped it anyway</span></span>
+        <span class="mark"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6.7" y="6.7" width="22.6" height="22.6" rx="6.6"/><circle cx="18" cy="18" r="5.2"/><circle cx="25.1" cy="10.9" r="1.25" fill="currentColor" stroke="none"/></svg></span>
+        <span class="datum" aria-hidden="true"></span>
+      </a>
+    </span>
+
+    <span class="portal-slot" style="--delay:.60s">
+      <a class="portal x-social" href="https://x.com/NamasteModiG" target="_blank" rel="noreferrer" aria-label="Open X profile">
+        <span class="label"><span class="label-name">X</span><span class="label-note">loose thoughts</span></span>
+        <span class="mark"><svg viewBox="0 0 36 36" fill="currentColor" aria-hidden="true"><path d="M8.1 7.5h6.45l5.06 6.77 5.94-6.77h2.18l-7.1 8.09L28.4 28.5h-6.43l-5.61-7.5-6.58 7.5H7.6l7.75-8.83L8.1 7.5Zm5.38 1.7h-2.1l11.56 17.6h2.09L13.48 9.2Z"/></svg></span>
+        <span class="datum" aria-hidden="true"></span>
+      </a>
+    </span>
+  </nav>
+
+  <div class="owner-name">Atharva Shembekar</div>
+</main>
+
+<script>
+(() => {
+  const field = document.querySelector(".constellation");
+  const space = document.querySelector(".space");
+  const slots = [...field.querySelectorAll(".portal-slot")];
+  const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const states = new Map();
+  let frame = 0;
+
+  const reel = document.querySelector(".reel");
+  const firstSongSet = reel.querySelector(".song-set");
+  const repeatedSongSet = firstSongSet.cloneNode(true);
+  repeatedSongSet.setAttribute("aria-hidden", "true");
+  repeatedSongSet.querySelectorAll("a").forEach(link => link.tabIndex = -1);
+  reel.append(repeatedSongSet);
+
+  const musicRail = document.querySelector(".music-rail");
+  const songObserver = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      entry.target.classList.toggle("is-current", entry.isIntersecting);
+    }
+  }, {
+    root: musicRail,
+    rootMargin: "-49% 0px -49% 0px",
+    threshold: .01
+  });
+  reel.querySelectorAll(".song").forEach(song => songObserver.observe(song));
+
+  for (const slot of slots) {
+    const portal = slot.querySelector(".portal");
+    states.set(portal, {
+      portal,
+      slot,
+      x: 0, y: 0, scale: 1,
+      vx: 0, vy: 0, vs: 0,
+      rx: 0, ry: 0, vrx: 0, vry: 0,
+      tx: 0, ty: 0, ts: 1, trx: 0, try: 0
+    });
+
+    portal.addEventListener("pointerenter", () => engage(portal));
+    portal.addEventListener("pointermove", event => attract(portal, event));
+    portal.addEventListener("pointerleave", () => release(portal));
+    portal.addEventListener("pointercancel", () => release(portal));
+    portal.addEventListener("focus", () => focus(portal));
+    portal.addEventListener("blur", () => release(portal));
+  }
+
+  function engage(portal) {
+    field.classList.add("is-engaged");
+    space.classList.add("has-active");
+    portal.classList.add("is-active");
+    const rect = portal.getBoundingClientRect();
+    space.style.setProperty("--plane-x", `${rect.left + rect.width / 2}px`);
+    space.style.setProperty("--plane-accent", getComputedStyle(portal).getPropertyValue("--accent").trim() || "255,255,255");
+  }
+
+  function attract(portal, event) {
+    if (!finePointer.matches || reducedMotion.matches) return;
+    const state = states.get(portal);
+    const rect = state.slot.getBoundingClientRect();
+    const dx = event.clientX - (rect.left + rect.width / 2);
+    const dy = event.clientY - (rect.top + rect.height / 2);
+    const distance = Math.hypot(dx, dy);
+    const influence = Math.max(0, 1 - distance / 95);
+
+    state.tx = dx * .105 * influence;
+    state.ty = dy * .08 * influence - influence * 3.5;
+    state.ts = 1 + influence * .075;
+    state.trx = dy * -.055 * influence;
+    state.try = dx * .065 * influence;
+    animate();
+  }
+
+  function focus(portal) {
+    engage(portal);
+    const state = states.get(portal);
+    state.ty = -4;
+    state.ts = 1.055;
+    state.trx = 0;
+    state.try = 0;
+    animate();
+  }
+
+  function release(portal) {
+    portal.classList.remove("is-active");
+    if (!field.querySelector(".portal:is(:hover,:focus-visible)")) {
+      field.classList.remove("is-engaged");
+      space.classList.remove("has-active");
+    }
+    const state = states.get(portal);
+    state.tx = 0;
+    state.ty = 0;
+    state.ts = 1;
+    state.trx = 0;
+    state.try = 0;
+    animate();
+  }
+
+  function animate() {
+    if (!frame) frame = requestAnimationFrame(step);
+  }
+
+  function step() {
+    let moving = false;
+
+    for (const state of states.values()) {
+      state.vx = (state.vx + (state.tx - state.x) * .12) * .72;
+      state.vy = (state.vy + (state.ty - state.y) * .12) * .72;
+      state.vs = (state.vs + (state.ts - state.scale) * .14) * .7;
+      state.vrx = (state.vrx + (state.trx - state.rx) * .11) * .72;
+      state.vry = (state.vry + (state.try - state.ry) * .11) * .72;
+      state.x += state.vx;
+      state.y += state.vy;
+      state.scale += state.vs;
+      state.rx += state.vrx;
+      state.ry += state.vry;
+
+      if (Math.abs(state.tx - state.x) < .01 && Math.abs(state.vx) < .01) state.x = state.tx;
+      if (Math.abs(state.ty - state.y) < .01 && Math.abs(state.vy) < .01) state.y = state.ty;
+      if (Math.abs(state.ts - state.scale) < .001 && Math.abs(state.vs) < .001) state.scale = state.ts;
+      if (Math.abs(state.trx - state.rx) < .01 && Math.abs(state.vrx) < .01) state.rx = state.trx;
+      if (Math.abs(state.try - state.ry) < .01 && Math.abs(state.vry) < .01) state.ry = state.try;
+
+      state.portal.style.transform = `perspective(460px) translate3d(${state.x.toFixed(2)}px,${state.y.toFixed(2)}px,0) rotateX(${state.rx.toFixed(2)}deg) rotateY(${state.ry.toFixed(2)}deg) scale(${state.scale.toFixed(4)})`;
+
+      if (state.x !== state.tx || state.y !== state.ty || state.scale !== state.ts || state.rx !== state.trx || state.ry !== state.try) moving = true;
+    }
+
+    frame = moving ? requestAnimationFrame(step) : 0;
+  }
+
+  const sceneImage = document.querySelector(".scene img");
+  const depth = { x: 0, y: 0, tx: 0, ty: 0, vx: 0, vy: 0, frame: 0 };
+
+  function aimDepth(event) {
+    if (!finePointer.matches || reducedMotion.matches) return;
+    depth.tx = (event.clientX / innerWidth - .5) * -4.5;
+    depth.ty = (event.clientY / innerHeight - .5) * -3;
+    if (!depth.frame) depth.frame = requestAnimationFrame(moveDepth);
+  }
+
+  function resetDepth() {
+    depth.tx = 0;
+    depth.ty = 0;
+    if (!depth.frame) depth.frame = requestAnimationFrame(moveDepth);
+  }
+
+  function moveDepth() {
+    depth.vx = (depth.vx + (depth.tx - depth.x) * .035) * .84;
+    depth.vy = (depth.vy + (depth.ty - depth.y) * .035) * .84;
+    depth.x += depth.vx;
+    depth.y += depth.vy;
+
+    sceneImage.style.transform = `translate3d(${depth.x.toFixed(2)}px,${depth.y.toFixed(2)}px,0) scale(1.008)`;
+    space.style.setProperty("--near-x", `${(-depth.x * 1.45).toFixed(2)}px`);
+    space.style.setProperty("--near-y", `${(-depth.y * 1.15).toFixed(2)}px`);
+    space.style.setProperty("--rail-x", `${(-depth.x * .42).toFixed(2)}px`);
+    space.style.setProperty("--rail-y", `${(-depth.y * .32).toFixed(2)}px`);
+
+    const settled = Math.abs(depth.tx - depth.x) < .01 && Math.abs(depth.ty - depth.y) < .01 && Math.abs(depth.vx) < .01 && Math.abs(depth.vy) < .01;
+    depth.frame = settled ? 0 : requestAnimationFrame(moveDepth);
+  }
+
+  window.addEventListener("pointermove", aimDepth, { passive: true });
+  document.documentElement.addEventListener("pointerleave", resetDepth);
+})();
+</script>
 </body>
 </html>
