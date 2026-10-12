@@ -16,6 +16,14 @@ Replies are deliberately scripted and visibly identified as sample replies. The 
 
 There is no model API, private evidence retrieval, authentication, analytics, persistence, or contact collection. Messages exist only in memory in the current browser tab. This is a design review surface; its illustrative responses must not become behavioral ground truth.
 
+## Color Direction
+
+The color pass separates surface, reading, identity, and interaction roles instead of tinting every element with the same hue. `--canvas` is a low-chroma cool background; `--signature` is blue ink for the name, wordmark, and secondary links; `--accent` is warm vermilion for input focus, the caret, and the enabled send action. Body text stays neutral. Evidence is shown on white, and disabled actions do not retain the active accent. Hover underlines, icons, labels, native disabled states, and focus outlines keep meaning independent of hue.
+
+This is a testable art-direction choice, not a psychological claim about Atharva. [Albers's contextual approach](https://www.albersfoundation.org/alberses/teaching/interaction-of-color) and [Schloss and Palmer's distinction between harmony, preference, and figure/background preference](https://palmerlab.berkeley.edu/pdf/Schloss%26Palmer%282011%29.pdf) informed composition. [IBM's purposeful color roles](https://www.ibm.com/design/language/color/) informed consistent application, not the selection of IBM's palette. [WCAG text contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) and [non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) provide the measurable constraints.
+
+Computed foreground/background ratios: reading text 13.98:1, reply body 9.98:1, secondary text 5.88:1, signature 6.77:1, placeholder 7.53:1, enabled send icon 5.03:1, and the input boundary 3.06:1. These are focused palette checks, not a claim of complete accessibility compliance.
+
 ## Design Questions
 
 - Does the opening make it natural to start with a problem or a point of view?
