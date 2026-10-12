@@ -1,0 +1,15 @@
+{
+  "name": "fortheplot-conversation-study",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-preview.mjs",
+    "dev": "node scripts/serve-preview.mjs"
+  },
+  "dependencies": {
+    "lucide": "^0.468.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
+}
