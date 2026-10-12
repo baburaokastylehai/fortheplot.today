@@ -35,7 +35,7 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
 svg { width: 19px; height: 19px; stroke-width: 1.5; flex-shrink: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .app-shell { min-height: 100dvh; position: relative; }
-.site-header { position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; height: 88px; padding: 22px 46px; background: var(--canvas); }
+.site-header { position: sticky; top: 0; z-index: 20; display: flex; justify-content: flex-end; align-items: center; height: 88px; padding: 22px 46px; background: var(--canvas); }
 .header-actions { display: flex; align-items: center; gap: 18px; }
 .about-button { color: var(--muted); }
 .about-button:hover { color: var(--signature); }
@@ -43,8 +43,8 @@ svg { width: 19px; height: 19px; stroke-width: 1.5; flex-shrink: 0; }
 .icon-button:hover { background: var(--hover-surface); }
 [data-tooltip]::after { content: attr(data-tooltip); position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; font-size: 11px; padding: 7px 10px; color: var(--canvas); background: var(--ink); border-radius: 4px; width: max-content; pointer-events: none; opacity: 0; transition: opacity .1s; }
 [data-tooltip]:hover::after, [data-tooltip]:focus-visible::after { opacity: 1; transition-delay: .3s; }
-.reset-button, .music-shortcut { display: none; }
-.is-conversing .reset-button, .is-conversing .music-shortcut { display: inline-flex; }
+.reset-button { display: none; }
+.is-conversing .reset-button { display: inline-flex; }
 .is-conversing .site-header { border-bottom: 1px solid var(--line); }
 .composer-dock { position: absolute; top: 30dvh; width: 100%; padding: 0 32px; z-index: 10; }
 .composer-inner { width: min(750px, 100%); margin: 0 auto; position: relative; }
@@ -55,7 +55,7 @@ textarea::placeholder { color: var(--placeholder); opacity: 1; }
 textarea:focus-visible { outline: none; }
 .send-button, .stop-button { flex-shrink: 0; width: 48px; height: 48px; background: var(--accent); color: var(--on-accent); }
 .send-button:hover:not(:disabled) { background: var(--accent-hover); }
-.stop-button { background: var(--ink); }
+.stop-button { background: var(--ink); color: var(--canvas); }
 .stop-button:hover { background: var(--body); }
 .send-button:disabled { background: var(--inactive); color: var(--on-inactive); }
 .stop-button svg { width: 12px; height: 12px; fill: currentColor; }
@@ -64,21 +64,6 @@ textarea:focus-visible { outline: none; }
 .opening svg { width: 14px; height: 14px; color: currentColor; }
 .opening:hover { color: var(--signature); }
 .opening:hover span { text-decoration: underline; text-underline-offset: 4px; }
-.site-footer { position: absolute; bottom: 31px; width: 100%; padding: 0 46px; display: flex; justify-content: space-between; align-items: end; gap: 28px; }
-.wordmark { font: italic 24px "Iowan Old Style", Baskerville, Georgia, serif; color: var(--signature); white-space: nowrap; }
-.music-link { display: flex; align-items: center; gap: 12px; background: transparent; padding: 0; min-height: 56px; font-size: 13px; line-height: 1.5; text-align: left; }
-.music-link small { display: block; font-size: 10px; color: var(--muted); margin-top: 3px; }
-.music-disc { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--input-line); border-radius: 50%; }
-.music-disc svg { width: 16px; height: 16px; }
-.music-toggle[data-playback="playing"] { color: var(--accent); }
-.music-toggle[data-playback="playing"] .music-disc { border-color: var(--accent); }
-.project-bookmark { display: flex; align-items: center; gap: 13px; min-height: 58px; justify-self: end; background: transparent; padding: 0; text-align: left; font-size: 13px; }
-.project-bookmark img { width: 76px; height: 50px; object-fit: cover; border: 1px solid var(--line); border-radius: 2px; }
-.project-bookmark:hover, .music-link:hover { color: var(--signature); }
-.project-bookmark:hover > span, .music-link:hover > span:last-child { text-decoration: underline; text-underline-offset: 4px; }
-.project-bookmark span { display: block; line-height: 1.5; }
-.project-bookmark svg { width: 12px; height: 12px; margin-left: 9px; vertical-align: middle; }
-.is-conversing .site-footer { display: none; }
 .is-conversing .composer-dock { position: fixed; top: auto; bottom: 0; padding: 18px 24px max(24px, env(safe-area-inset-bottom)); background: var(--canvas); }
 .is-conversing .composer { padding-bottom: 11px; }
 .is-conversing textarea { font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; min-height: 48px; padding: 12px 0; }
@@ -106,15 +91,6 @@ textarea:focus-visible { outline: none; }
 .latest-button svg { width: 14px; height: 14px; }
 dialog { color: var(--ink); background: var(--surface); border: 1px solid var(--line); padding: 0; box-shadow: -20px 0 80px #20232d14; }
 dialog::backdrop { background: #20232d60; backdrop-filter: blur(2px); }
-.music-panel { width: min(480px, calc(100% - 48px)); margin: 0 auto; position: sticky; top: 88px; z-index: 19; padding-bottom: 20px; background: var(--canvas); }
-.music-panel-header { display: flex; justify-content: space-between; align-items: center; min-height: 44px; font-size: 13px; }
-.music-panel-header small { color: var(--muted); font-size: 11px; }
-.music-frame { height: 152px; width: 100%; background: #080b11; }
-.music-frame iframe { width: 100%; height: 152px; border: 0; display: block; }
-.music-status { font-size: 12px; color: var(--muted); padding-top: 12px; }
-.music-fallback { display: flex; gap: 10px; align-items: center; min-height: 44px; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
-.music-fallback svg { width: 14px; height: 14px; }
-.music-open:not(.is-conversing) .composer-dock { position: relative; top: auto; margin-top: 38px; margin-bottom: 150px; }
 .evidence-dialog { width: min(430px, 100%); height: 100dvh; max-height: 100dvh; max-width: 100%; margin: 0 0 0 auto; border-radius: 0; }
 .evidence-header { position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between; align-items: center; padding: 24px 22px 14px 32px; background: var(--surface); }
 .eyebrow { margin: 0; font-size: 11px; color: var(--muted); }
@@ -140,7 +116,7 @@ h2 span { color: var(--accent); }
 .about-dialog .eyebrow { margin-bottom: 21px; }
 .about-dialog h2 { font-size: 36px; }
 .about-dialog .privacy-note { font-size: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: 23px; }
-@media (max-width: 850px) { .site-header { padding-inline: 28px; } .site-footer { padding: 0 28px; gap: 20px; } .project-bookmark img { width: 58px; height: 42px; } }
+@media (max-width: 850px) { .site-header { padding-inline: 28px; } }
 @media (max-width: 600px) {
   .site-header { height: 76px; padding: max(16px, env(safe-area-inset-top)) 23px 16px; }
   .header-actions { gap: 5px; }
@@ -150,17 +126,9 @@ h2 span { color: var(--accent); }
   .send-button, .stop-button { width: 44px; height: 44px; }
   .opening { font-size: 11px; gap: 8px; }
   .openings { margin-top: 14px; }
-  .site-footer { bottom: max(22px, env(safe-area-inset-bottom)); padding: 0 23px; gap: 10px; }
-  .wordmark { font-size: 22px; }
-  .music-link { font-size: 12px; gap: 9px; }
-  .project-bookmark { gap: 9px; font-size: 12px; }
-  .project-bookmark img { width: 52px; height: 38px; }
-  .project-bookmark svg { margin-left: 5px; }
-  .project-bookmark > span { white-space: nowrap; }
   .conversation { width: calc(100% - 46px); padding: 26px 0 160px; }
   .message.user .message-content { font-size: 22px; }
   .message.assistant .message-content { font-size: 16px; }
-  .music-panel { top: 76px; }
   .is-conversing .composer-dock { padding: 14px 23px max(22px, env(safe-area-inset-bottom)); }
   .evidence-dialog { width: 100%; }
   .evidence-header { padding: 15px 16px 12px 24px; }
@@ -168,7 +136,7 @@ h2 span { color: var(--accent); }
   .about-dialog { padding: 43px 26px 26px; }
   .about-dialog h2 { font-size: 32px; }
 }
-@media (max-height: 650px) and (max-width: 600px) { .composer-dock { top: 25dvh; } .site-footer { bottom: 18px; } }
+@media (max-height: 650px) and (max-width: 600px) { .composer-dock { top: 25dvh; } }
 @media (hover: none) { .copy-reply { opacity: 1; } [data-tooltip]::after { display: none; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
 @media (forced-colors: active) { textarea:focus-visible { outline: 2px solid Highlight; outline-offset: 4px; } .composer:focus-within { border-color: Highlight; } }

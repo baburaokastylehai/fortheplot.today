@@ -1,8 +1,7 @@
-import { createIcons, ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check, Play, Pause, Info } from 'lucide';
+import { createIcons, ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check, Info } from 'lucide';
 import { openings, respond } from './scenarios.js';
-import { initializeMusic } from './music.js';
 
-const icons = { ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check, Play, Pause, Info };
+const icons = { ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check, Info };
 const $ = selector => document.querySelector(selector);
 const messages = $('#messages');
 const input = $('#message-input');
@@ -112,7 +111,6 @@ for (const dialog of [projectDialog, aboutDialog]) {
 $('.about-button').addEventListener('click', event => openDialog(aboutDialog, event.currentTarget));
 $('.close-about').addEventListener('click', () => closeDialog(aboutDialog));
 $('.close-evidence').addEventListener('click', () => closeDialog(projectDialog));
-$('.project-bookmark').addEventListener('click', event => openDialog(projectDialog, event.currentTarget));
 $('.discuss-project').addEventListener('click', () => {
   dialogTrigger = input;
   closeDialog(projectDialog);
@@ -253,4 +251,3 @@ window.visualViewport?.addEventListener('resize', keyboardOffset);
 window.visualViewport?.addEventListener('scroll', keyboardOffset);
 renderIcons();
 resizeInput();
-initializeMusic(renderIcons);

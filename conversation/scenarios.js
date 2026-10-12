@@ -14,7 +14,7 @@ export function respond(text, state) {
   }
   if (/\b(music|song|vienna|billy joel|john mayer|mehdi hassan)\b/.test(input)) {
     state.topic = 'music';
-    return reply(["The rotation on fortheplot moves between Billy Joel, John Mayer, Mehdi Hassan, and Sinatra. That mix is part of what makes the site feel personal.", "Vienna is on the record tonight. What have you been coming back to?"]);
+    return reply(["The original fortheplot site's playlist includes Billy Joel, John Mayer, Mehdi Hassan, and Sinatra.", "That's drawn from the public playlist, not a live listening status."]);
   }
   let recognized = true;
   if (/tripboard|trip board|no login|no account|security risk|just use chat|that tradeoff/.test(input)) state.topic = 'tripboard';
