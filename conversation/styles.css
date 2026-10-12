@@ -1,0 +1,142 @@
+:root {
+  color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --canvas: #111722;
+  --surface: #1c222d;
+  --ink: #f2ede6;
+  --body: #ded8d0;
+  --muted: #aaa7a3;
+  --placeholder: #cbc4bc;
+  --line: #363c47;
+  --input-line: #798190;
+  --signature: #e9e0d4;
+  --signature-hover: #ffffff;
+  --hover-surface: #2b303b;
+  --accent: #d74d66;
+  --accent-hover: #b82f49;
+  --on-accent: #ffffff;
+  --inactive: #2b303b;
+  --on-inactive: #aaa7a3;
+  --selection: #8b2940;
+  color: var(--ink);
+  background: var(--canvas);
+}
+::selection { color: var(--ink); background: var(--selection); }
+* { box-sizing: border-box; letter-spacing: 0; }
+body { margin: 0; min-width: 280px; }
+button, textarea { font: inherit; }
+button { cursor: pointer; color: inherit; border: 0; }
+button, textarea, a { -webkit-tap-highlight-color: transparent; }
+button, a { touch-action: manipulation; }
+a { color: inherit; text-decoration: none; }
+button:disabled { cursor: default; }
+button[hidden], [hidden] { display: none !important; }
+button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+svg { width: 19px; height: 19px; stroke-width: 1.5; flex-shrink: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.app-shell { min-height: 100dvh; position: relative; }
+.site-header { position: sticky; top: 0; z-index: 20; display: flex; justify-content: flex-end; align-items: center; height: 88px; padding: 22px 46px; background: var(--canvas); }
+.header-actions { display: flex; align-items: center; gap: 18px; }
+.about-button { color: var(--muted); }
+.about-button:hover { color: var(--signature); }
+.icon-button { position: relative; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; background: transparent; }
+.icon-button:hover { background: var(--hover-surface); }
+[data-tooltip]::after { content: attr(data-tooltip); position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; font-size: 11px; padding: 7px 10px; color: var(--canvas); background: var(--ink); border-radius: 4px; width: max-content; pointer-events: none; opacity: 0; transition: opacity .1s; }
+[data-tooltip]:hover::after, [data-tooltip]:focus-visible::after { opacity: 1; transition-delay: .3s; }
+.reset-button { display: none; }
+.is-conversing .reset-button { display: inline-flex; }
+.is-conversing .site-header { border-bottom: 1px solid var(--line); }
+.composer-dock { position: absolute; top: 30dvh; width: 100%; padding: 0 32px; z-index: 10; }
+.composer-inner { width: min(750px, 100%); margin: 0 auto; position: relative; }
+.composer { display: flex; align-items: flex-end; gap: 18px; padding: 0 0 20px; border-bottom: 1px solid var(--input-line); }
+.composer:focus-within { border-color: var(--accent); box-shadow: 0 1px 0 var(--accent); }
+textarea { width: 0; flex: 1; resize: none; min-height: 112px; max-height: 150px; padding: 4px 0; font: 32px/1.5 "Iowan Old Style", Baskerville, Georgia, serif; background: transparent; border: 0; color: var(--ink); caret-color: var(--accent); }
+textarea::placeholder { color: var(--placeholder); opacity: 1; }
+textarea:focus-visible { outline: none; }
+.send-button, .stop-button { flex-shrink: 0; width: 48px; height: 48px; background: var(--accent); color: var(--on-accent); }
+.send-button:hover:not(:disabled) { background: var(--accent-hover); }
+.stop-button { background: var(--ink); color: var(--canvas); }
+.stop-button:hover { background: var(--body); }
+.send-button:disabled { background: var(--inactive); color: var(--on-inactive); }
+.stop-button svg { width: 12px; height: 12px; fill: currentColor; }
+.openings { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; margin-top: 20px; }
+.opening { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; padding: 8px 0; background: transparent; font-size: 13px; color: var(--muted); line-height: 1.5; text-align: left; }
+.opening svg { width: 14px; height: 14px; color: currentColor; }
+.opening:hover { color: var(--signature); }
+.opening:hover span { text-decoration: underline; text-underline-offset: 4px; }
+.is-conversing .composer-dock { position: fixed; top: auto; bottom: 0; padding: 18px 24px max(24px, env(safe-area-inset-bottom)); background: var(--canvas); }
+.is-conversing .composer { padding-bottom: 11px; }
+.is-conversing textarea { font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; min-height: 48px; padding: 12px 0; }
+.is-conversing .send-button, .is-conversing .stop-button { width: 44px; height: 44px; }
+.conversation { width: min(750px, calc(100% - 48px)); margin: 0 auto; padding: 38px 0 180px; }
+.message { position: relative; margin-bottom: 32px; }
+.message-label { color: var(--muted); font-size: 10px; margin-bottom: 13px; }
+.message.user .message-content { font: 24px/1.45 "Iowan Old Style", Baskerville, Georgia, serif; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); }
+.message.assistant .message-content { font-size: 17px; line-height: 1.75; overflow-wrap: anywhere; color: var(--body); }
+.message-content p { margin: 0 0 18px; }
+.message-content p:last-child { margin-bottom: 0; }
+.message.assistant { margin-bottom: 39px; }
+.reply-context { display: flex; align-items: center; gap: 12px; margin-top: 13px; }
+.evidence-link { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; background: transparent; padding: 4px 0; font-size: 12px; color: var(--signature); text-decoration: underline; text-underline-offset: 5px; }
+.evidence-link:hover { color: var(--signature-hover); }
+.evidence-link svg { width: 14px; height: 14px; }
+.copy-reply { opacity: 0; color: var(--muted); margin-left: auto; }
+.message:hover .copy-reply, .message:focus-within .copy-reply { opacity: 1; }
+.followups { display: flex; flex-wrap: wrap; gap: 3px 26px; }
+.followup { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 7px 0; background: transparent; color: var(--muted); font-size: 12px; line-height: 1.5; text-align: left; }
+.followup:hover { color: var(--signature); text-decoration: underline; text-underline-offset: 4px; }
+.followup svg { width: 14px; height: 14px; }
+.status-line { margin-top: 16px; font-size: 12px; color: var(--muted); }
+.latest-button { position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 15px; font-size: 12px; border: 1px solid var(--input-line); border-radius: 6px; background: var(--surface); white-space: nowrap; }
+.latest-button svg { width: 14px; height: 14px; }
+dialog { color: var(--ink); background: var(--surface); border: 1px solid var(--line); padding: 0; box-shadow: -20px 0 80px #20232d14; }
+dialog::backdrop { background: #20232d60; backdrop-filter: blur(2px); }
+.evidence-dialog { width: min(430px, 100%); height: 100dvh; max-height: 100dvh; max-width: 100%; margin: 0 0 0 auto; border-radius: 0; }
+.evidence-header { position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between; align-items: center; padding: 24px 22px 14px 32px; background: var(--surface); }
+.eyebrow { margin: 0; font-size: 11px; color: var(--muted); }
+.evidence-body { padding: 12px 32px 40px; }
+.project-image { display: block; width: 100%; aspect-ratio: 1.5; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 4px; margin-bottom: 31px; }
+.project-category { font-size: 11px; color: var(--muted); margin: 0 0 12px; }
+h2 { font: 40px/1.13 "Iowan Old Style", Baskerville, Georgia, serif; margin: 0 0 24px; }
+h2 span { color: var(--accent); }
+.evidence-body p, .about-dialog p { font-size: 14px; line-height: 1.8; color: var(--body); }
+.evidence-body .project-summary { font: 22px/1.45 "Iowan Old Style", Baskerville, Georgia, serif; color: var(--ink); }
+.project-facts { padding: 12px 0; margin-top: 28px; border-block: 1px solid var(--line); }
+.project-facts div { margin: 15px 0; }
+.project-facts span { font-size: 10px; color: var(--muted); }
+.project-facts p { margin: 5px 0 0; font-size: 12px; }
+.project-link, .source-link, .discuss-project { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 48px; padding: 12px 0; font-size: 13px; }
+.project-link { margin-top: 19px; }
+.project-link, .source-link { color: var(--signature); }
+.project-link:hover, .source-link:hover { color: var(--signature-hover); text-decoration: underline; text-underline-offset: 4px; }
+.project-link svg, .source-link svg, .discuss-project svg { width: 15px; height: 15px; }
+.discuss-project { width: 100%; background: transparent; border-top: 1px solid var(--line); margin-top: 24px; }
+.about-dialog { width: min(510px, calc(100% - 32px)); max-height: calc(100dvh - 40px); padding: 48px 40px 32px; border-radius: 8px; }
+.about-dialog .close-about { position: absolute; top: 9px; right: 10px; }
+.about-dialog .eyebrow { margin-bottom: 21px; }
+.about-dialog h2 { font-size: 36px; }
+.about-dialog .privacy-note { font-size: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: 23px; }
+@media (max-width: 850px) { .site-header { padding-inline: 28px; } }
+@media (max-width: 600px) {
+  .site-header { height: 76px; padding: max(16px, env(safe-area-inset-top)) 23px 16px; }
+  .header-actions { gap: 5px; }
+  .composer-dock { top: 27dvh; padding: 0 23px; }
+  textarea { font-size: 26px; min-height: 108px; }
+  .composer { gap: 9px; padding-bottom: 15px; }
+  .send-button, .stop-button { width: 44px; height: 44px; }
+  .opening { font-size: 11px; gap: 8px; }
+  .openings { margin-top: 14px; }
+  .conversation { width: calc(100% - 46px); padding: 26px 0 160px; }
+  .message.user .message-content { font-size: 22px; }
+  .message.assistant .message-content { font-size: 16px; }
+  .is-conversing .composer-dock { padding: 14px 23px max(22px, env(safe-area-inset-bottom)); }
+  .evidence-dialog { width: 100%; }
+  .evidence-header { padding: 15px 16px 12px 24px; }
+  .evidence-body { padding: 10px 24px 32px; }
+  .about-dialog { padding: 43px 26px 26px; }
+  .about-dialog h2 { font-size: 32px; }
+}
+@media (max-height: 650px) and (max-width: 600px) { .composer-dock { top: 25dvh; } }
+@media (hover: none) { .copy-reply { opacity: 1; } [data-tooltip]::after { display: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+@media (forced-colors: active) { textarea:focus-visible { outline: 2px solid Highlight; outline-offset: 4px; } .composer:focus-within { border-color: Highlight; } }
