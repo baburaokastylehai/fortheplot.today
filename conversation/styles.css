@@ -1,23 +1,23 @@
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --canvas: #eef2fb;
-  --surface: #ffffff;
-  --ink: #20232d;
-  --body: #363b48;
-  --muted: #555d70;
-  --placeholder: #454d61;
-  --line: #c6cddd;
-  --input-line: #818b9f;
-  --signature: #2549bd;
-  --signature-hover: #19358f;
-  --hover-surface: #dce5fa;
-  --accent: #c34424;
-  --accent-hover: #a5361b;
+  --canvas: #111722;
+  --surface: #1c222d;
+  --ink: #f2ede6;
+  --body: #ded8d0;
+  --muted: #aaa7a3;
+  --placeholder: #cbc4bc;
+  --line: #363c47;
+  --input-line: #798190;
+  --signature: #e9e0d4;
+  --signature-hover: #ffffff;
+  --hover-surface: #2b303b;
+  --accent: #d74d66;
+  --accent-hover: #b82f49;
   --on-accent: #ffffff;
-  --inactive: #dce2ee;
-  --on-inactive: #697389;
-  --selection: #ffcfbc;
+  --inactive: #2b303b;
+  --on-inactive: #aaa7a3;
+  --selection: #8b2940;
   color: var(--ink);
   background: var(--canvas);
 }
@@ -35,26 +35,18 @@ button:focus-visible, a:focus-visible, textarea:focus-visible { outline: 2px sol
 svg { width: 19px; height: 19px; stroke-width: 1.5; flex-shrink: 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .app-shell { min-height: 100dvh; position: relative; }
-.site-header { position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: flex-start; padding: 35px 46px 24px; background: var(--canvas); }
-.conversation-identity h1 { font: 34px/.97 "Iowan Old Style", Baskerville, Georgia, serif; margin: 0; font-weight: 400; color: var(--signature); }
-.conversation-identity h1 span { color: var(--accent); }
-.conversation-identity small { display: block; font-size: 10px; color: var(--muted); margin-top: 16px; }
-.conversation-identity small span { color: var(--muted); margin: 0 4px; }
+.site-header { position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; height: 88px; padding: 22px 46px; background: var(--canvas); }
 .header-actions { display: flex; align-items: center; gap: 18px; }
-.about-button { min-height: 44px; padding: 10px 0; font-size: 12px; color: var(--muted); background: transparent; }
+.about-button { color: var(--muted); }
 .about-button:hover { color: var(--signature); }
 .icon-button { position: relative; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; background: transparent; }
 .icon-button:hover { background: var(--hover-surface); }
-[data-tooltip]::after { content: attr(data-tooltip); position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; font-size: 11px; padding: 7px 10px; color: var(--surface); background: var(--ink); border-radius: 4px; width: max-content; pointer-events: none; opacity: 0; transition: opacity .1s; }
+[data-tooltip]::after { content: attr(data-tooltip); position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; font-size: 11px; padding: 7px 10px; color: var(--canvas); background: var(--ink); border-radius: 4px; width: max-content; pointer-events: none; opacity: 0; transition: opacity .1s; }
 [data-tooltip]:hover::after, [data-tooltip]:focus-visible::after { opacity: 1; transition-delay: .3s; }
-.reset-button { visibility: hidden; }
-.is-conversing .reset-button { visibility: visible; }
-.is-conversing .conversation-identity h1 { font-size: 25px; line-height: 1.1; }
-.is-conversing .conversation-identity h1 br { display: none; }
-.is-conversing .conversation-identity h1 br::after { content: " "; }
-.is-conversing .conversation-identity small { margin-top: 8px; }
-.is-conversing .site-header { align-items: center; padding-top: 23px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
-.composer-dock { position: absolute; top: 34dvh; width: 100%; padding: 0 32px; z-index: 10; }
+.reset-button, .music-shortcut { display: none; }
+.is-conversing .reset-button, .is-conversing .music-shortcut { display: inline-flex; }
+.is-conversing .site-header { border-bottom: 1px solid var(--line); }
+.composer-dock { position: absolute; top: 30dvh; width: 100%; padding: 0 32px; z-index: 10; }
 .composer-inner { width: min(750px, 100%); margin: 0 auto; position: relative; }
 .composer { display: flex; align-items: flex-end; gap: 18px; padding: 0 0 20px; border-bottom: 1px solid var(--input-line); }
 .composer:focus-within { border-color: var(--accent); box-shadow: 0 1px 0 var(--accent); }
@@ -72,13 +64,14 @@ textarea:focus-visible { outline: none; }
 .opening svg { width: 14px; height: 14px; color: currentColor; }
 .opening:hover { color: var(--signature); }
 .opening:hover span { text-decoration: underline; text-underline-offset: 4px; }
-.site-footer { position: absolute; bottom: 31px; width: 100%; padding: 0 46px; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: end; gap: 28px; }
-.wordmark { justify-self: start; font: italic 23px "Iowan Old Style", Baskerville, Georgia, serif; color: var(--signature); }
-.music-link { display: flex; align-items: center; gap: 12px; justify-self: center; font-size: 12px; line-height: 1.5; }
-.music-link small, .project-bookmark small { display: block; font-size: 10px; color: var(--muted); margin-bottom: 4px; }
-.music-artist { color: var(--muted); margin-left: 4px; }
-.record { display: block; width: 34px; height: 34px; border-radius: 50%; background: var(--ink); border: 6px double var(--on-inactive); position: relative; }
-.record::after { content: ""; position: absolute; width: 9px; height: 9px; background: var(--accent); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.site-footer { position: absolute; bottom: 31px; width: 100%; padding: 0 46px; display: flex; justify-content: space-between; align-items: end; gap: 28px; }
+.wordmark { font: italic 24px "Iowan Old Style", Baskerville, Georgia, serif; color: var(--signature); white-space: nowrap; }
+.music-link { display: flex; align-items: center; gap: 12px; background: transparent; padding: 0; min-height: 56px; font-size: 13px; line-height: 1.5; text-align: left; }
+.music-link small { display: block; font-size: 10px; color: var(--muted); margin-top: 3px; }
+.music-disc { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--input-line); border-radius: 50%; }
+.music-disc svg { width: 16px; height: 16px; }
+.music-toggle[data-playback="playing"] { color: var(--accent); }
+.music-toggle[data-playback="playing"] .music-disc { border-color: var(--accent); }
 .project-bookmark { display: flex; align-items: center; gap: 13px; min-height: 58px; justify-self: end; background: transparent; padding: 0; text-align: left; font-size: 13px; }
 .project-bookmark img { width: 76px; height: 50px; object-fit: cover; border: 1px solid var(--line); border-radius: 2px; }
 .project-bookmark:hover, .music-link:hover { color: var(--signature); }
@@ -113,6 +106,15 @@ textarea:focus-visible { outline: none; }
 .latest-button svg { width: 14px; height: 14px; }
 dialog { color: var(--ink); background: var(--surface); border: 1px solid var(--line); padding: 0; box-shadow: -20px 0 80px #20232d14; }
 dialog::backdrop { background: #20232d60; backdrop-filter: blur(2px); }
+.music-panel { width: min(480px, calc(100% - 48px)); margin: 0 auto; position: sticky; top: 88px; z-index: 19; padding-bottom: 20px; background: var(--canvas); }
+.music-panel-header { display: flex; justify-content: space-between; align-items: center; min-height: 44px; font-size: 13px; }
+.music-panel-header small { color: var(--muted); font-size: 11px; }
+.music-frame { height: 152px; width: 100%; background: #080b11; }
+.music-frame iframe { width: 100%; height: 152px; border: 0; display: block; }
+.music-status { font-size: 12px; color: var(--muted); padding-top: 12px; }
+.music-fallback { display: flex; gap: 10px; align-items: center; min-height: 44px; font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.music-fallback svg { width: 14px; height: 14px; }
+.music-open:not(.is-conversing) .composer-dock { position: relative; top: auto; margin-top: 38px; margin-bottom: 150px; }
 .evidence-dialog { width: min(430px, 100%); height: 100dvh; max-height: 100dvh; max-width: 100%; margin: 0 0 0 auto; border-radius: 0; }
 .evidence-header { position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between; align-items: center; padding: 24px 22px 14px 32px; background: var(--surface); }
 .eyebrow { margin: 0; font-size: 11px; color: var(--muted); }
@@ -138,36 +140,27 @@ h2 span { color: var(--accent); }
 .about-dialog .eyebrow { margin-bottom: 21px; }
 .about-dialog h2 { font-size: 36px; }
 .about-dialog .privacy-note { font-size: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: 23px; }
-@media (max-width: 850px) { .site-header { padding: 28px 28px 22px; } .site-footer { padding: 0 28px; gap: 20px; } .music-artist { display: none; } .project-bookmark img { width: 58px; height: 42px; } }
+@media (max-width: 850px) { .site-header { padding-inline: 28px; } .site-footer { padding: 0 28px; gap: 20px; } .project-bookmark img { width: 58px; height: 42px; } }
 @media (max-width: 600px) {
-  .site-header { padding: max(23px, env(safe-area-inset-top)) 23px 20px; }
-  .conversation-identity h1 { font-size: 29px; }
-  .conversation-identity small { font-size: 9px; margin-top: 13px; }
+  .site-header { height: 76px; padding: max(16px, env(safe-area-inset-top)) 23px 16px; }
   .header-actions { gap: 5px; }
-  .about-button { max-width: 100px; text-align: right; line-height: 1.5; font-size: 11px; }
-  .composer-dock { top: 32dvh; padding: 0 23px; }
+  .composer-dock { top: 27dvh; padding: 0 23px; }
   textarea { font-size: 26px; min-height: 108px; }
   .composer { gap: 9px; padding-bottom: 15px; }
   .send-button, .stop-button { width: 44px; height: 44px; }
   .opening { font-size: 11px; gap: 8px; }
   .openings { margin-top: 14px; }
-  .site-footer { bottom: max(22px, env(safe-area-inset-bottom)); padding: 0 23px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 10px; }
-  .wordmark { font-size: 22px; align-self: end; }
-  .music-link { grid-column: 1; grid-row: 1; justify-self: start; font-size: 11px; gap: 9px; }
-  .record { width: 29px; height: 29px; }
-  .project-bookmark { grid-column: 2; grid-row: 1 / span 2; align-self: end; gap: 9px; font-size: 12px; }
+  .site-footer { bottom: max(22px, env(safe-area-inset-bottom)); padding: 0 23px; gap: 10px; }
+  .wordmark { font-size: 22px; }
+  .music-link { font-size: 12px; gap: 9px; }
+  .project-bookmark { gap: 9px; font-size: 12px; }
   .project-bookmark img { width: 52px; height: 38px; }
-  .project-bookmark small { max-width: 100px; font-size: 9px; }
   .project-bookmark svg { margin-left: 5px; }
   .project-bookmark > span { white-space: nowrap; }
-  .project-bookmark small { white-space: normal; }
   .conversation { width: calc(100% - 46px); padding: 26px 0 160px; }
   .message.user .message-content { font-size: 22px; }
   .message.assistant .message-content { font-size: 16px; }
-  .is-conversing .site-header { padding: 20px 23px 16px; }
-  .is-conversing .conversation-identity h1 { font-size: 20px; }
-  .is-conversing .conversation-identity h1 br { display: block; }
-  .is-conversing .conversation-identity small { max-width: 155px; font-size: 8px; }
+  .music-panel { top: 76px; }
   .is-conversing .composer-dock { padding: 14px 23px max(22px, env(safe-area-inset-bottom)); }
   .evidence-dialog { width: 100%; }
   .evidence-header { padding: 15px 16px 12px 24px; }
@@ -175,7 +168,7 @@ h2 span { color: var(--accent); }
   .about-dialog { padding: 43px 26px 26px; }
   .about-dialog h2 { font-size: 32px; }
 }
-@media (max-height: 650px) and (max-width: 600px) { .composer-dock { top: 29dvh; } .site-footer { bottom: 18px; gap: 14px; } }
+@media (max-height: 650px) and (max-width: 600px) { .composer-dock { top: 25dvh; } .site-footer { bottom: 18px; } }
 @media (hover: none) { .copy-reply { opacity: 1; } [data-tooltip]::after { display: none; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
 @media (forced-colors: active) { textarea:focus-visible { outline: 2px solid Highlight; outline-offset: 4px; } .composer:focus-within { border-color: Highlight; } }

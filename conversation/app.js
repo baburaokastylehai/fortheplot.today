@@ -1,7 +1,8 @@
-import { createIcons, ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check } from 'lucide';
+import { createIcons, ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check, Play, Pause, Info } from 'lucide';
 import { openings, respond } from './scenarios.js';
+import { initializeMusic } from './music.js';
 
-const icons = { ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check };
+const icons = { ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check, Play, Pause, Info };
 const $ = selector => document.querySelector(selector);
 const messages = $('#messages');
 const input = $('#message-input');
@@ -252,3 +253,4 @@ window.visualViewport?.addEventListener('resize', keyboardOffset);
 window.visualViewport?.addEventListener('scroll', keyboardOffset);
 renderIcons();
 resizeInput();
+initializeMusic(renderIcons);
