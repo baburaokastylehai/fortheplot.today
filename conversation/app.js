@@ -1,7 +1,7 @@
-import { createIcons, ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check, Music2 } from 'lucide';
+import { createIcons, ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check } from 'lucide';
 import { openings, respond } from './scenarios.js';
 
-const icons = { ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check, Music2 };
+const icons = { ArrowUp, ArrowUpRight, ArrowRight, ArrowDown, Square, SquarePen, X, Copy, Check };
 const $ = selector => document.querySelector(selector);
 const messages = $('#messages');
 const input = $('#message-input');
@@ -32,6 +32,8 @@ function resizeInput() {
   input.style.height = 'auto';
   input.style.height = `${Math.min(input.scrollHeight, 150)}px`;
   send.disabled = !input.value.trim();
+  $('.welcome').hidden = document.body.classList.contains('is-conversing') || Boolean(input.value.trim());
+  followups.hidden = state.running || Boolean(input.value.trim());
 }
 
 function bottom() { return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 70; }
@@ -81,7 +83,7 @@ function showFollowups(items) {
     const label = document.createElement('span');
     label.textContent = text;
     button.append(label, icon('arrow-right'));
-    button.addEventListener('click', () => submitMessage(text));
+    button.addEventListener('click', () => setDraft(text));
     followups.append(button);
   }
   renderIcons();
@@ -109,9 +111,11 @@ for (const dialog of [projectDialog, aboutDialog]) {
 $('.about-button').addEventListener('click', event => openDialog(aboutDialog, event.currentTarget));
 $('.close-about').addEventListener('click', () => closeDialog(aboutDialog));
 $('.close-evidence').addEventListener('click', () => closeDialog(projectDialog));
+$('.project-bookmark').addEventListener('click', event => openDialog(projectDialog, event.currentTarget));
 $('.discuss-project').addEventListener('click', () => {
+  dialogTrigger = input;
   closeDialog(projectDialog);
-  submitMessage("Isn't no login a security risk?");
+  setDraft("Isn't no login a security risk?");
 });
 
 function addReplyActions(article, text, evidence) {
@@ -212,18 +216,26 @@ input.addEventListener('keydown', event => {
     submitMessage(input.value);
   }
 });
-document.querySelectorAll('[data-scenario]').forEach(button => button.addEventListener('click', () => submitMessage(openings[button.dataset.scenario])));
+function setDraft(text) {
+  input.value = text;
+  resizeInput();
+  input.focus({ preventScroll: true });
+  input.setSelectionRange(text.length, text.length);
+}
+document.querySelectorAll('[data-scenario]').forEach(button => button.addEventListener('click', () => setDraft(openings[button.dataset.scenario])));
 $('.reset-button').addEventListener('click', () => {
   cancelReply();
   state.controller = null;
   state.topic = null;
   state.follows = true;
+  input.value = '';
   messages.replaceChildren();
   followups.replaceChildren();
   document.body.classList.remove('is-conversing');
   $('.welcome').hidden = false;
   $('.conversation').hidden = true;
   latest.hidden = true;
+  announce('New conversation');
   setRunning(false);
   window.scrollTo({ top: 0, behavior: 'instant' });
   input.focus({ preventScroll: true });

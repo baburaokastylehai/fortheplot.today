@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#121414">
+  <meta name="theme-color" content="#f5f6f4">
   <meta name="description" content="A conversation with an AI representation of Atharva Shembekar. Product, technology, and things worth figuring out.">
   <meta name="robots" content="noindex, nofollow">
   <title>Atharva Shembekar - for the plot</title>
@@ -12,27 +12,15 @@
   <script type="module" src="./app.js"></script>
 </head>
 <body>
-  <div class="atmosphere" aria-hidden="true"><img src="./assets/hero-atmosphere.png" alt=""></div>
   <div class="app-shell">
     <header class="site-header">
-      <a class="wordmark" href="https://fortheplot.today" aria-label="Visit the existing fortheplot.today website">for the plot<span class="wordmark-dot">.</span></a>
-      <div class="conversation-identity"><span>Atharva Shembekar</span><small>An AI representation</small></div>
+      <div class="conversation-identity"><h1>Atharva <br>Shembekar<span>.</span></h1><small>AI representation <span aria-hidden="true">/</span> Scripted study</small></div>
       <nav class="header-actions" aria-label="Conversation actions">
         <button class="icon-button reset-button" type="button" aria-label="New conversation" data-tooltip="New conversation"><i data-icon="square-pen"></i></button>
-        <button class="about-button" type="button">About</button>
+        <button class="about-button" type="button">About this conversation</button>
       </nav>
     </header>
     <main id="main">
-      <section class="welcome" aria-labelledby="welcome-title">
-        <p class="eyebrow">A little less introduction. A little more conversation.</p>
-        <h1 id="welcome-title">Atharva Shembekar<span class="name-period">.</span></h1>
-        <p class="welcome-copy">Bring a problem. Question a point of view.<br>Let's see where the conversation goes.</p>
-        <div class="openings" aria-label="Conversation openings">
-          <button class="opening" type="button" data-scenario="framing"><span class="opening-label">A product problem</span><span class="opening-title">Everyone wants an AI feature.<i data-icon="arrow-up-right"></i></span></button>
-          <button class="opening" type="button" data-scenario="market"><span class="opening-label">A point of view</span><span class="opening-title">No revenue. No market?<i data-icon="arrow-up-right"></i></span></button>
-          <button class="opening" type="button" data-scenario="tripboard"><span class="opening-label">Something I've built</span><span class="opening-title">The story behind Tripboard.<i data-icon="arrow-up-right"></i></span></button>
-        </div>
-      </section>
       <section class="conversation" aria-label="Conversation" tabindex="-1" hidden>
         <div id="messages" role="log" aria-live="polite" aria-relevant="additions"></div>
         <div class="followups" aria-label="Continue the conversation"></div>
@@ -43,13 +31,21 @@
         <button class="latest-button" type="button" hidden><i data-icon="arrow-down"></i><span>Latest reply</span></button>
         <form class="composer" aria-label="Write a message">
           <label class="sr-only" for="message-input">Your message</label>
-          <textarea id="message-input" rows="1" maxlength="3000" placeholder="What's on your mind?" autocomplete="off"></textarea>
+          <textarea id="message-input" rows="2" maxlength="3000" placeholder="What are you thinking about?" autocomplete="off"></textarea>
           <button class="send-button icon-button" type="submit" aria-label="Send message" data-tooltip="Send message" disabled><i data-icon="arrow-up"></i></button>
           <button class="stop-button icon-button" type="button" aria-label="Stop reply" data-tooltip="Stop reply" hidden><i data-icon="square"></i></button>
         </form>
-        <div class="composer-meta"><span>AI representation <span class="meta-divider">/</span> Scripted preview</span><a href="https://www.youtube.com/watch?v=wccRif2DaGs" target="_blank" rel="noreferrer" class="music-link"><i data-icon="music-2"></i><span>Vienna <span class="music-artist">&middot; Billy Joel</span></span></a></div>
+        <div class="welcome openings" aria-label="Optional conversation openings">
+          <button class="opening" type="button" data-scenario="market"><span>No revenue. Would you still build it?</span><i data-icon="arrow-up-right"></i></button>
+          <button class="opening" type="button" data-scenario="leadership"><span>When would you stop pushing back?</span><i data-icon="arrow-up-right"></i></button>
+        </div>
       </div>
     </div>
+    <footer class="site-footer">
+      <a class="wordmark" href="https://fortheplot.today" aria-label="Visit the existing fortheplot.today website">for the plot.</a>
+      <a href="https://www.youtube.com/watch?v=wccRif2DaGs" target="_blank" rel="noreferrer" class="music-link"><span class="record" aria-hidden="true"></span><span><small>In rotation</small>Vienna <span class="music-artist">/ Billy Joel</span></span></a>
+      <button class="project-bookmark" type="button" aria-label="A closer look at Tripboard"><img src="./assets/previews/tripboard.jpg" alt=""><span><small>Made along the way</small>Tripboard<i data-icon="arrow-up-right"></i></span></button>
+    </footer>
   </div>
   <dialog class="evidence-dialog" aria-labelledby="evidence-title">
     <div class="evidence-header"><span class="eyebrow">From the work</span><button class="icon-button close-evidence" type="button" aria-label="Close project" data-tooltip="Close"><i data-icon="x"></i></button></div>
@@ -68,11 +64,11 @@
   <dialog class="about-dialog" aria-labelledby="about-title">
     <button class="icon-button close-about" type="button" aria-label="Close about" data-tooltip="Close"><i data-icon="x"></i></button>
     <p class="eyebrow">About this conversation</p>
-    <h2 id="about-title">A way into how<br>Atharva thinks.</h2>
+    <h2 id="about-title">Atharva, represented.</h2>
     <p>Atharva is a Senior Product Manager working across early products, enterprise SaaS, and personal experiments like Tripboard.</p>
     <p>This is an early design study for an AI representation of his professional judgment. Replies are illustrative, scripted examples based on the project brief. They are not a validated model of his views.</p>
     <p class="privacy-note">Messages stay in this browser tab. This preview has no model connection, analytics, or contact collection.</p>
-    <a class="project-link" href="https://www.linkedin.com/in/atharvashembekar/" target="_blank" rel="noreferrer">Meet the actual Atharva<i data-icon="arrow-up-right"></i></a>
+    <a class="project-link" href="https://www.linkedin.com/in/atharvashembekar/" target="_blank" rel="noreferrer">Atharva on LinkedIn<i data-icon="arrow-up-right"></i></a>
   </dialog>
   <span id="announcement" class="sr-only" role="status"></span>
 </body>

@@ -8,7 +8,9 @@ Run `npm install`, `npm run build`, then `npm run dev` to see it at the local UR
 
 ## Scope
 
-The opening, conversation, follow-up paths, stop action, reset, copying, public project evidence, focus return, reduced motion, and mobile layout are implemented.
+The experience opens with a blank chat, not an existing or staged conversation. Two optional openings explore demand versus monetization and judgment after a leadership decision. Choosing one fills an editable draft; it does not send. Openings disappear while the visitor writes. Relevant follow-ups use the same draft-first behavior.
+
+The composition uses a writing surface, the original wordmark, a real Tripboard thumbnail, and music from the existing site. Project evidence opens without disturbing the conversation or draft. The conversation, stop action, reset, copying, focus return, reduced motion, and mobile layout are implemented.
 
 Replies are deliberately scripted and visibly identified as sample replies. The scenarios reflect observations in the supplied project brief, not a validated behavioral model. Arbitrary questions receive a candid fallback. The project panel describes public Tripboard facts, without inventing personal history.
 
@@ -19,6 +21,6 @@ There is no model API, private evidence retrieval, authentication, analytics, pe
 - Does the opening make it natural to start with a problem or a point of view?
 - Can someone experience a position changing when new context arrives?
 - Does opening work help the discussion while preserving the reader's place?
-- Does the atmosphere still feel like fortheplot during a sustained exchange?
+- Do the typography, music, and actual work give the experience a recognizable character without competing with the chat?
 
 The next iteration should be driven by Atharva's reactions to these concrete states and his own authored responses.

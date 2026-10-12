@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/assets/previews', { recursive: true });
-for (const asset of ['hero-atmosphere.png', 'tripboard-map.png', 'previews/tripboard.jpg']) {
+for (const asset of ['tripboard-map.png', 'previews/tripboard.jpg']) {
   await cp(`assets/${asset}`, `dist/assets/${asset}`);
 }
 const result = await build({

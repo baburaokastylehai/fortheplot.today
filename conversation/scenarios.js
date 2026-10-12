@@ -1,6 +1,7 @@
 export const openings = {
   framing: 'Our CEO wants an AI feature. Where would you start?',
-  market: "There's interest, but no revenue. Is there actually a market?",
+  market: "There's interest, but no revenue. Would you still build it?",
+  leadership: 'Leadership has already made the decision. When would you stop pushing back?',
   tripboard: 'What made you build Tripboard?'
 };
 
@@ -9,18 +10,18 @@ const reply = (paragraphs, followups = [], evidence = false) => ({ paragraphs, f
 export function respond(text, state) {
   const input = text.toLowerCase();
   if (/astrolog|horoscope|sexual|girlfriend|boyfriend|married|dating|relationship|private life|personal life|hack into|steal|commit fraud/.test(input)) {
-    return reply(["I keep this conversation to professional work and intellectual interests. I won't speak for Atharva's private life or help with wrongdoing."], ['What made you build Tripboard?']);
+    return reply(["I keep this conversation to professional work and intellectual interests. I won't speak for Atharva's private life or help with wrongdoing."]);
   }
   if (/\b(music|song|vienna|billy joel|john mayer|mehdi hassan)\b/.test(input)) {
     state.topic = 'music';
-    return reply(["The rotation on fortheplot moves between Billy Joel, John Mayer, Mehdi Hassan, and Sinatra. That mix is part of what makes the site feel personal.", "Vienna is on the record tonight. What have you been coming back to?"], ['Back to the product question.']);
+    return reply(["The rotation on fortheplot moves between Billy Joel, John Mayer, Mehdi Hassan, and Sinatra. That mix is part of what makes the site feel personal.", "Vienna is on the record tonight. What have you been coming back to?"]);
   }
   let recognized = true;
   if (/tripboard|trip board|no login|no account|security risk|just use chat|that tradeoff/.test(input)) state.topic = 'tripboard';
   else if (/no revenue|no market|monetiz|won.t pay|revenue next quarter|market demand/.test(input)) state.topic = 'market';
   else if (/\b(ai|ceo|leadership|retention|setup|competitor|product question)\b/.test(input)) state.topic = 'framing';
   else if (!(state.topic === 'tripboard' && /change first|improve|whatsapp/.test(input)) && !(state.topic === 'framing' && /already decided|must ship|measure|metric/.test(input)) && !(state.topic === 'market' && /next quarter|deadline|runway|free|use it/.test(input))) recognized = false;
-  if (!recognized) return reply(["This early preview has a few authored conversations, so I don't have a considered answer to that question yet.", "We can explore a product decision, the difference between demand and monetization, or the choices behind Tripboard."], [openings.framing, openings.tripboard]);
+  if (!recognized) return reply(["The model isn't connected in this study yet, so I don't have a considered answer to that. This preview only has a few authored sample replies."], []);
 
   if (state.topic === 'tripboard') {
     if (/security|risk|private|that tradeoff/.test(input)) {
@@ -55,5 +56,5 @@ export function respond(text, state) {
     }
     return reply(["I'd first make the customer problem concrete. Which part of their work is difficult enough that a new feature deserves their attention?", "Then I'd look at whether AI changes that experience materially. What are people struggling to finish today?"], ['Setup takes two weeks.', 'But leadership has already decided.']);
   }
-  return reply(["This early preview has a few authored conversations, so I don't have a considered answer to that question yet.", "We can explore a product decision, the difference between demand and monetization, or the choices behind Tripboard."], [openings.framing, openings.tripboard]);
+  return reply(["The model isn't connected in this study yet, so I don't have a considered answer to that. This preview only has a few authored sample replies."]);
 }
