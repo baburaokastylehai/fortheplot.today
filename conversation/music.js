@@ -91,7 +91,12 @@ export function initializeMusic(renderIcons) {
       api.createController(mount, { uri: 'spotify:track:4U45aEWtQhrm8A5mxPaFZ7', width: '100%', height: 152 }, controller => {
         if (current !== sequence) { controller.destroy(); return; }
         player = controller;
-        frame.querySelector('iframe')?.setAttribute('title', 'Vienna by Billy Joel on Spotify');
+        const iframe = frame.querySelector('iframe');
+        if (iframe) {
+          iframe.title = 'Vienna by Billy Joel on Spotify';
+          iframe.loading = 'eager';
+          iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        }
         controller.addListener('ready', () => {
           if (current !== sequence) return;
           clearTimeout(loadingTimer);
